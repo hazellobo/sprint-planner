@@ -1,17 +1,19 @@
 # Final project
+
 ## Project title - Sprint planner
 
 ## Project details
 
 What is sprint planner ?
+
 - A sprint planner is a set of statuses and transitions that an issue moves through during its lifecycle and typically represents processes within your organization.
 - Sprint planner helps the scrum team to organize their tasks for any sprint and follow agile methodologies.
 - Sprint planner provides features which lets you track issue and bugs related to your software.
-- Sprint planner also provides additional featured which lets a user track the progress graphically as well. 
+- Sprint planner also provides additional featured which lets a user track the progress graphically as well.
 - Sprint planner lets a particular user filter out the issues based on his preference to provide a more enhanced user experience which will be persisted throughout the session.
 - Sprint planner provides instant notification for the user associated with the ticket via emails.
 - Sprint planner provides a way to connect with all the stakeholders of an issue.
-- Sprint planner lets you link tickets which solves the same issue. 
+- Sprint planner lets you link tickets which solves the same issue.
 
 ## User Story:
 
@@ -34,5 +36,5 @@ What is sprint planner ?
 - As a user, I should be able to add attachments to a ticket.
 - As a user, I should be able to see the graphical representation of the progress done in a particular sprint.
 - As a user, I should be able to link tickets with another ticket.
-    
 
+![alt text](workflow.png)

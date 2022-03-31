@@ -37,4 +37,4 @@ What is sprint planner ?
 - As a user, I should be able to see the graphical representation of the progress done in a particular sprint.
 - As a user, I should be able to link tickets with another ticket.
 
-![alt text](workflow.png)
+![alt text](domain_model.png)

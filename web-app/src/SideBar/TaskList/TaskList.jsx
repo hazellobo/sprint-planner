@@ -1,10 +1,12 @@
 import React, { useState, useMemo } from "react";
 import { AgGridReact } from "ag-grid-react";
+import { ChangeDetectionStrategyType } from "ag-grid-react/lib/shared/changeDetectionService";
+import "./TaskList.scss";
 
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 
-const TaskList = () => {
+function TaskList() {
   const [rowData] = useState([
     {
       name: "Add user stories",
@@ -12,7 +14,7 @@ const TaskList = () => {
       assignedTo: "Anvitha",
       status: "open",
       type: "bug",
-      priority: "high"
+      priority: "high",
     },
     {
       name: "Add screens",
@@ -20,7 +22,7 @@ const TaskList = () => {
       assignedTo: "Anvitha",
       status: "open",
       type: "bug",
-      priority: "medium"
+      priority: "medium",
     },
   ]);
 
@@ -41,14 +43,21 @@ const TaskList = () => {
     { field: "assignedTo" },
     { field: "status" },
     { field: "type" },
-    {field: "priority"}
+    { field: "priority" },
   ]);
 
   return (
-    <div className="ag-theme-alpine" style={{ height: '100%', width: '100%' }}>
-      <AgGridReact rowData={rowData} columnDefs={columnDefs} defaultColDef={defaultColDef}></AgGridReact>
+    <div className="ag-theme-alpine ag-grid-tasklist">
+      <AgGridReact
+        rowDataChangeDetectionStrategy={
+          ChangeDetectionStrategyType.IdentityCheck
+        }
+        rowData={rowData}
+        columnDefs={columnDefs}
+        defaultColDef={defaultColDef}
+      ></AgGridReact>
     </div>
   );
-};
+}
 
 export default TaskList;

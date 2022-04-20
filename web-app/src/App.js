@@ -1,3 +1,4 @@
+import React from 'react';
 import './App.scss';
 import NavBar from './NavBar/NavBar'
 import SideBar from './SideBar/SideBar';

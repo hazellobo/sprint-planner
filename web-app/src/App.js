@@ -54,7 +54,7 @@ function App() {
           }
           )
           <></>
-    <LoginForm></LoginForm>
+    {/* <LoginForm></LoginForm> */}
       <Router>
         <SideBar />
         <Switch>

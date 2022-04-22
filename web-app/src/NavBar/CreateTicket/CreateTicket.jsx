@@ -3,10 +3,12 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownItem from "react-bootstrap/DropdownItem";
+import Form from "react-bootstrap/Form";
+import "bootstrap/dist/js/bootstrap.min.js";
 
 require("react-bootstrap/ModalHeader");
 
-class CreateTicket extends React.Component {
+class Project extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -16,7 +18,11 @@ class CreateTicket extends React.Component {
       Reporter: "",
       Assignee: "",
       Priority: "",
+      Users: ["ghsad", "hdagcvf", "hgasdfc"],
+      Sprints: [],
+      TicketSprint: "",
     };
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   openModal = () => this.setState({ isOpen: true });
@@ -41,35 +47,47 @@ class CreateTicket extends React.Component {
     const target = event.target;
     const value = target.value;
     const name = target.name;
+    console.log(event);
     this.setState({
-      [name]: value.split(","),
-    });
-    console.log(this.state.AddTeammates);
-  }
-
-  handleIssueSelect(e) {
-    this.setState({
-      IssueType: e.eventKey,
+      [name]: value,
     });
   }
 
-  handleReporterSelect(e) {
+  handleIssueType = (e) => {
+    this.setState.IssueType = e;
+  };
+
+  handleInputChange(event) {
     this.setState({
-      Reporter: e.eventKey,
+      IssueDescription: event,
     });
   }
 
-  handleAssigneeSelect(e) {
+  handleReporter(event) {
     this.setState({
-      Assignee: e.eventKey,
+      Assignee: event,
+    });
+    console.log(event);
+  }
+
+  handleAssignee(event) {
+    this.setState({
+      Reporter: event,
     });
   }
 
-  handlePrioritySelect(e) {
+  handlePriority(event) {
     this.setState({
-      Priority: e.eventKey,
+      Priority: event,
     });
   }
+
+  handleSpint(event) {
+    this.setState({
+      TicketSprint: event,
+    });
+  }
+  handleSpint;
 
   render() {
     return (
@@ -81,7 +99,7 @@ class CreateTicket extends React.Component {
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
           >
-            User Login
+            Create Ticket
           </button>
 
           <div
@@ -92,94 +110,85 @@ class CreateTicket extends React.Component {
           >
             <div className="modal-dialog">
               <div className="modal-content">
+                <div className="modal-header">
+                  <h5
+                    className="modal-title text-danger"
+                    id="exampleModalLabel"
+                  >
+                    Create Ticket
+                  </h5>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
                 <div className="modal-body">
                   <form>
                     <div className="mb-3">
+                      <label className="form-label">Issue Type</label>
+                      <select onChange={this.handleIssueType}>
+                        <option value="Task">Task</option>
+                        <option value="Bug">Bug</option>
+                        <option value="Story">Story</option>
+                      </select>
+                    </div>
+                    <div className="mb-3">
                       <label className="form-label">Description</label>
-                      <textarea
-                        className="form-control"
-                        name="IssueDescription"
-                        id="IssueDescription"
-                        value={this.state.IssueDescription}
-                        onChange={(event) => this.handleChange(event)}
-                        aria-describedby="emailHelp"
+                      <Form.Control
+                        as="textarea"
+                        rows="3"
+                        name="address"
+                        onChange={this.handleInputChange}
                       />
                     </div>
-
-                    <div className="Issue Type">
-                      <label>Select Issue :</label>
-                      <DropdownButton
-                        alignRight
-                        title="Dropdown right"
-                        id="dropdown-menu-align-right"
-                        onSelect={this.handleIssueSelect()}
-                      >
-                        <option selected>Issue Type</option>
-                        <Dropdown.Item eventKey="Bug">Bug</Dropdown.Item>
-                        <Dropdown.Item eventKey="Story">Story</Dropdown.Item>
-                        <Dropdown.Divider />
-                      </DropdownButton>
+                    <div className="mb-3">
+                      <label className="form-label">Reporter</label>
+                      <select onChange={this.handleReporter}>
+                        {this.state.Users.map((User) => {
+                          return <option value={User}> {User} </option>;
+                        })}
+                      </select>
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label">Assignee</label>
+                      <select onChange={this.handleAssignee}>
+                        {this.state.Users.map((User) => {
+                          return <option value={User}> {User} </option>;
+                        })}
+                      </select>
                     </div>
 
-                    <div className="modal-body">
-                      <label>Reporter :</label>
-                      <DropdownButton
-                        alignRight
-                        title="Dropdown right"
-                        id="dropdown-menu-align-right"
-                        onSelect={this.handleReporterSelect}
-                      >
-                        <DropdownMenu>
-                          {this.users.map((size) => (
-                            <DropdownItem>{size}</DropdownItem>
-                          ))}
-                        </DropdownMenu>
-                      </DropdownButton>
+                    <div className="mb-3">
+                      <label className="form-label">Priority</label>
+                      <select onChange={this.handlePriority}>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                      </select>
                     </div>
 
-                    <div className="modal-body">
-                      <label>Assignee :</label>
-                      <DropdownButton
-                        alignRight
-                        title="Dropdown right"
-                        id="dropdown-menu-align-right"
-                        onSelect={this.handleAssigneeSelect}
-                      >
-                        <DropdownMenu>
-                          {this.users.map((size) => (
-                            <DropdownItem>{size}</DropdownItem>
-                          ))}
-                        </DropdownMenu>
-                      </DropdownButton>
-                    </div>
-
-                    <div className="Issue Type">
-                      <label>Priority :</label>
-                      <DropdownButton
-                        alignRight
-                        title="Dropdown right"
-                        id="dropdown-menu-align-right"
-                        onSelect={this.handlePrioritySelect}
-                      >
-                        <Dropdown.Item eventKey="P1">P1</Dropdown.Item>
-                        <Dropdown.Item eventKey="P2">P2</Dropdown.Item>
-                        <Dropdown.Item eventKey="P3">P3</Dropdown.Item>
-                        <Dropdown.Item eventKey="P4">P4</Dropdown.Item>
-                        <Dropdown.Divider />
-                      </DropdownButton>
+                    <div className="mb-3">
+                      <label className="form-label">Sprint</label>
+                      <select onChange={this.handleSpint}>
+                        {this.state.Sprints.map((Sprint) => {
+                          return <option value={Sprint}> {Sprint} </option>;
+                        })}
+                      </select>
                     </div>
                   </form>
                 </div>
                 <div className="modal-footer">
                   <button type="submit" className="btn btn-primary">
-                    Create Issue
+                    Add
                   </button>
                   <button
                     type="button"
                     className="btn btn-warning"
                     data-bs-dismiss="modal"
                   >
-                    Cancel
+                    Close
                   </button>
                 </div>
               </div>
@@ -191,4 +200,4 @@ class CreateTicket extends React.Component {
   }
 }
 
-export default CreateTicket;
+export default Project;

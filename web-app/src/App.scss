@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
 @import "~bootstrap/scss/bootstrap";
 
 * {
@@ -10,7 +10,8 @@
 
 .main {
     height: 100%;
+    overflow: hidden;
 }
 .sidebar-routes {
-    height: 100%;
+    height: 93vh;
 }

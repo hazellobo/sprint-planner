@@ -1,8 +1,4 @@
 import React from "react";
-import DropdownButton from "react-bootstrap/DropdownButton";
-import Dropdown from "react-bootstrap/Dropdown";
-import DropdownMenu from "react-bootstrap/DropdownMenu";
-import DropdownItem from "react-bootstrap/DropdownItem";
 import Form from "react-bootstrap/Form";
 import "bootstrap/dist/js/bootstrap.min.js";
 
@@ -12,7 +8,7 @@ class Project extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpen: true,
+      isOpen: this.props.isOpen,
       IssueType: "",
       IssueDescription: "",
       Reporter: "",
@@ -82,121 +78,125 @@ class Project extends React.Component {
     });
   }
 
-  handleSpint(event) {
+  handleSprint(event) {
     this.setState({
       TicketSprint: event,
     });
   }
-  handleSpint;
+  // handleSpint;
 
   render() {
-    return (
-      <div className="App">
-        <div className="container p-5">
-          <button
+    console.log("this.open", this.state.isOpen);
+    if (this.state.isOpen) {
+      console.log("inside modal");
+      return (
+        <div className="App">
+          <div className="container p-5">
+            {/* <button
             type="button"
             className="btn btn-primary"
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
           >
             Create Ticket
-          </button>
+          </button> */}
 
-          <div
-            className="modal fade"
-            id="exampleModal"
-            aria-labelledby="exampleModalLabel"
-            aria-hidden="true"
-          >
-            <div className="modal-dialog">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5
-                    className="modal-title text-danger"
-                    id="exampleModalLabel"
-                  >
-                    Create Ticket
-                  </h5>
-                  <button
-                    type="button"
-                    className="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                  ></button>
-                </div>
-                <div className="modal-body">
-                  <form>
-                    <div className="mb-3">
-                      <label className="form-label">Issue Type</label>
-                      <select onChange={this.handleIssueType}>
-                        <option value="Task">Task</option>
-                        <option value="Bug">Bug</option>
-                        <option value="Story">Story</option>
-                      </select>
-                    </div>
-                    <div className="mb-3">
-                      <label className="form-label">Description</label>
-                      <Form.Control
-                        as="textarea"
-                        rows="3"
-                        name="address"
-                        onChange={this.handleInputChange}
-                      />
-                    </div>
-                    <div className="mb-3">
-                      <label className="form-label">Reporter</label>
-                      <select onChange={this.handleReporter}>
-                        {this.state.Users.map((User) => {
-                          return <option value={User}> {User} </option>;
-                        })}
-                      </select>
-                    </div>
-                    <div className="mb-3">
-                      <label className="form-label">Assignee</label>
-                      <select onChange={this.handleAssignee}>
-                        {this.state.Users.map((User) => {
-                          return <option value={User}> {User} </option>;
-                        })}
-                      </select>
-                    </div>
+            <div
+              className="modal fade"
+              id="exampleModal"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
+              <div className="modal-dialog">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5
+                      className="modal-title text-danger"
+                      id="exampleModalLabel"
+                    >
+                      Create Ticket
+                    </h5>
+                    <button
+                      type="button"
+                      className="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div className="modal-body">
+                    <form>
+                      <div className="mb-3">
+                        <label className="form-label">Issue Type</label>
+                        <select onChange={this.handleIssueType}>
+                          <option value="Task">Task</option>
+                          <option value="Bug">Bug</option>
+                          <option value="Story">Story</option>
+                        </select>
+                      </div>
+                      <div className="mb-3">
+                        <label className="form-label">Description</label>
+                        <Form.Control
+                          as="textarea"
+                          rows="3"
+                          name="address"
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <label className="form-label">Reporter</label>
+                        <select onChange={this.handleReporter}>
+                          {this.state.Users.map((User) => {
+                            return <option value={User}> {User} </option>;
+                          })}
+                        </select>
+                      </div>
+                      <div className="mb-3">
+                        <label className="form-label">Assignee</label>
+                        <select onChange={this.handleAssignee}>
+                          {this.state.Users.map((User) => {
+                            return <option value={User}> {User} </option>;
+                          })}
+                        </select>
+                      </div>
 
-                    <div className="mb-3">
-                      <label className="form-label">Priority</label>
-                      <select onChange={this.handlePriority}>
-                        <option value="High">High</option>
-                        <option value="Medium">Medium</option>
-                        <option value="Low">Low</option>
-                      </select>
-                    </div>
+                      <div className="mb-3">
+                        <label className="form-label">Priority</label>
+                        <select onChange={this.handlePriority}>
+                          <option value="High">High</option>
+                          <option value="Medium">Medium</option>
+                          <option value="Low">Low</option>
+                        </select>
+                      </div>
 
-                    <div className="mb-3">
-                      <label className="form-label">Sprint</label>
-                      <select onChange={this.handleSpint}>
-                        {this.state.Sprints.map((Sprint) => {
-                          return <option value={Sprint}> {Sprint} </option>;
-                        })}
-                      </select>
-                    </div>
-                  </form>
-                </div>
-                <div className="modal-footer">
-                  <button type="submit" className="btn btn-primary">
-                    Add
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-warning"
-                    data-bs-dismiss="modal"
-                  >
-                    Close
-                  </button>
+                      <div className="mb-3">
+                        <label className="form-label">Sprint</label>
+                        <select onChange={this.handleSprint}>
+                          {this.state.Sprints.map((Sprint) => {
+                            return <option value={Sprint}> {Sprint} </option>;
+                          })}
+                        </select>
+                      </div>
+                    </form>
+                  </div>
+                  <div className="modal-footer">
+                    <button type="submit" className="btn btn-primary">
+                      Add
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-warning"
+                      data-bs-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }
 

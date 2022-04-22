@@ -25,7 +25,7 @@ const SprintSchema = new Mongoose.Schema(
     },
     task_id: {
       type: Array,
-      required: "Task Ids are required",
+      // required: "Task Ids are required",
     },
   },
   {

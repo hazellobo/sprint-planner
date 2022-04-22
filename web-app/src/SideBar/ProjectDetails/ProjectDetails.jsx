@@ -1,4 +1,6 @@
 import React from "react";
+// import "~bootstrap/scss/bootstrap";
+import "bootstrap/dist/js/bootstrap.min.js";
 
 require("react-bootstrap/ModalHeader");
 
@@ -51,14 +53,14 @@ class Project extends React.Component {
             type="button"
             className="btn btn-primary"
             data-bs-toggle="modal"
-            data-bs-target="#exampleModal"
+            data-bs-target="#createProjectModal"
           >
             User Login
           </button>
 
           <div
             className="modal fade"
-            id="exampleModal"
+            id="createProjectModal"
             aria-labelledby="exampleModalLabel"
             aria-hidden="true"
           >

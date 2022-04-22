@@ -5,11 +5,12 @@ const UserSchema = new Mongoose.Schema(
   {
     emailId: {
       type: String,
-      required: "Email Id is required",
+      required: [true, "Email Id is required"],
+      unique: [true],
     },
     password: {
       type: String,
-      required: "Password is a required",
+      required: [true, "Password is a required"],
     },
     projectId: {
       type: Array,
@@ -24,11 +25,11 @@ const UserSchema = new Mongoose.Schema(
     },
   },
   {
-    versionKey: false,
+    timestamps: true,
   }
 );
 
-UserSchema.set("toJSON", { virtuals: true });
+//UserSchema.set("toJSON", { virtuals: true });
 
 const User = Mongoose.model("User", UserSchema);
 

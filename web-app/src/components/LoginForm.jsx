@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import './Login.scss';
+import Button from "react-bootstrap/Button";
 
 function LoginForm({ Login, error }) {
   const [details, setDetails] = useState({ name: "", email: "", password: "" });
@@ -45,7 +46,11 @@ function LoginForm({ Login, error }) {
             value={details.password}
           />
         </div>
-        <input type="submit" value="LOGIN"></input>
+        <Button
+              type='submit'
+            >
+              Login
+            </Button>
       </div>
     </form>
   );

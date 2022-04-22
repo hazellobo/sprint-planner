@@ -3,11 +3,12 @@ import { useState } from "react";
 // import NavBar from "./NavBar/NavBar";
 import SideBar from "./SideBar/SideBar";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { TaskList } from "./SideBar/TaskList/TaskList";
-import { Reports } from "./SideBar/Reports/Reports";
-import { Board } from "./SideBar/Board/Board";
 import LoginForm from "./components/LoginForm";
-import { Project } from "./SideBar/ProjectDetails/ProjectDetails";
+import TaskList from "./SideBar/TaskList/TaskList";
+import Reports from "./SideBar/Reports/Reports";
+import Board from "./SideBar/Board/Board";
+import Project from "./SideBar/ProjectDetails/ProjectDetails";
+import NavBarC from "./NavBar/NavBar";
 
 function App() {
   const adminUser = {
@@ -55,6 +56,9 @@ function App() {
           )
           <></>
     {/* <LoginForm></LoginForm> */}
+    <div className="main">
+      <NavBarC></NavBarC>
+      <div className="sidebar-routes">
       <Router>
         <SideBar />
         <Switch>
@@ -62,8 +66,11 @@ function App() {
           <Route path="/board" exact component={Board} />
           <Route path="/reports" component={Reports} />
           <Route path="/project" component={Project} />
+          <Route path = "/login" component={Login}/>
         </Switch>
       </Router>
+      </div>
+    </div>
     </div>
   );
 }

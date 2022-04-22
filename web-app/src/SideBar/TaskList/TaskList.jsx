@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React from "react";
 import { AgGridReact } from "ag-grid-react";
 import { ChangeDetectionStrategyType } from "ag-grid-react/lib/shared/changeDetectionService";
@@ -6,8 +7,8 @@ import ticketApis from "../../services/tickets-service.js";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import Button from "react-bootstrap/Button";
-import TypeRenderer from "./typeRenderer";
-import StatusRenderer from "./statusRenderer";
+import * as AiIcons from "react-icons/ai";
+import * as VscIcons from "react-icons/vsc";
 
 class TaskList extends React.Component {
   constructor(props) {
@@ -26,44 +27,26 @@ class TaskList extends React.Component {
         { field: "name" },
         { field: "description", width: 400, editable: true },
         { field: "assignedTo" },
+        { field: "status" },
+        { field: "ticketType" },
         {
-          field: "status",
-          cellEditor: StatusRenderer,
+          field: "priority",
           cellRenderer: function (params) {
-            // if (params.value === "Closed") {
-            return `<span>` + params.value + `</span>`;
-            // }
+            if (params.value == "Low") {
+              return <AiIcons.AiOutlineArrowDown />;
+            } else if (params.value == "Medium") {
+              return <VscIcons.VscThreeBars />;
+            } else if (params.value == "High") {
+              return <AiIcons.AiOutlineArrowUp />;
+            }
           },
         },
-        { field: "ticketType", cellEditor: TypeRenderer },
-        { field: "priority" },
       ],
       rowData: [],
     };
     this.onTypeChange = this.onTypeChange.bind(this);
     this.onStatusChange = this.onStatusChange.bind(this);
   }
-
-  // cellEditorSelector(params) {
-  //   console.log(params.data)
-  //   if (params.data === 'ticketType') {
-  //     return {
-  //       component: TypeRenderer,
-  //     };
-  //   }
-
-  //   if (params.data.type === 'status') {
-  //     return {
-  //       component: 'agRichSelectCellEditor',
-  //       params: {
-  //         values: ['Male', 'Female'],
-  //       },
-  //       popup: true,
-  //     };
-  //   }
-
-  //   return undefined;
-  // }
 
   componentDidMount() {
     ticketApis
@@ -101,12 +84,6 @@ class TaskList extends React.Component {
     return (
       <div className="tasklist">
         <div className="edit-ticket-btn">
-          {/* <h5>Task List</h5> */}
-          {/* <DropdownButton id="dropdown-basic-button" title="Select sprint">
-            <Dropdown.Item>Action</Dropdown.Item>
-            <Dropdown.Item>Another action</Dropdown.Item>
-            <Dropdown.Item>Something else</Dropdown.Item>
-          </DropdownButton> */}
           <select name="sprints" id="sprints">
             <option value="volvo">Sprint1</option>
             <option value="saab">Backlog</option>

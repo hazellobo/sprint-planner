@@ -13,15 +13,17 @@ class NavBarC extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalState: false,
+      isOpen: false,
     };
   }
-  state = {};
+  // state = {};
   handleModal = () => this.setState({ modalState: true });
   // handleModal() {
   //   this.setState({modalState: })
   //   this.state.modalState = !this.state.modalState;
   // }
+  openModal = () => this.setState({ isOpen: true });
+  closeModal = () => this.setState({ isOpen: false });
   render() {
     return (
       <>
@@ -37,7 +39,7 @@ class NavBarC extends React.Component {
               />{" "}
               Sprint Planner
             </Navbar.Brand>
-            <Button variant="primary" onClick={this.handleModal}>
+            <Button variant="primary" onClick={this.openModal}>
               Create Ticket
             </Button>
             <Navbar.Collapse id="navbarScroll">
@@ -69,7 +71,7 @@ class NavBarC extends React.Component {
             </Navbar.Collapse>
           </Container>
         </Navbar>
-        <CreateTicket isOpen={this.state.modalState}></CreateTicket>
+        <CreateTicket isOpen={this.state.isOpen}></CreateTicket>
       </>
     );
   }

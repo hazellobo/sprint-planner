@@ -11,39 +11,40 @@ import Project from "./SideBar/ProjectDetails/ProjectDetails";
 import NavBarC from "./NavBar/NavBar";
 
 function App() {
-  const adminUser = {
-    email: "admin@admin.com",
-    password: "admin123",
-  };
-  const [user, setUser] = useState({ name: "", email: "" });
-  const [error, setError] = useState("");
-  const Login = (details) => {
-    console.log(details);
+  // const adminUser = {
+  //   email: "admin@admin.com",
+  //   password: "admin123",
+  // };
+  // const [user, setUser] = useState({ name: "", email: "" });
+  // const [error, setError] = useState("");
+  // const Login = (details) => {
+  //   console.log(details);
 
-    if (
-      details.email === adminUser.email &&
-      details.password === adminUser.password
-    ) {
-      console.log("Logged in");
-      setUser({
-        name: details.name,
-        email: details.email,
-      });
-    } else {
-      console.log("Details do not match!");
-      setError("Details do not match!");
-    }
-  };
-  const Logout = () => {
-    setUser({
-      name: "",
-      email: " ",
-    });
-  };
+  //   if (
+  //     details.email === adminUser.email &&
+  //     details.password === adminUser.password
+  //   ) {
+  //     console.log("Logged in");
+  //     setUser({
+  //       name: details.name,
+  //       email: details.email,
+  //     });
+  //   } else {
+  //     console.log("Details do not match!");
+  //     setError("Details do not match!");
+  //   }
+  // };
+  // const Logout = () => {
+  //   setUser({
+  //     name: "",
+  //     email: " ",
+  //   });
+  // };
+  let emailId = window.localStorage.getItem("emailId");
   return (
-    <div className="App">
-      {user.email !== "" ? (
-        <div className="main">
+    <div className="main">
+      {emailId !== null ? (
+        <div>
           <NavBarC></NavBarC>
           <div className="sidebar-routes">
             <Router>
@@ -53,20 +54,21 @@ function App() {
                 <Route path="/board" exact component={Board} />
                 <Route path="/reports" component={Reports} />
                 <Route path="/project" component={Project} />
-                <Route path="/login" component={Login} />
+                {/* <Route path="/login" component={Login} /> */}
               </Switch>
             </Router>
           </div>
-          <h2>
+          {/* <h2>
             Welcome, <span>{user.name}</span>
           </h2>
 
-          <button onClick={Logout}>Logout</button>
+          <button onClick={Logout}>Logout</button> */}
         </div>
       ) : (
-        <LoginForm Login={Login} error={error} />
+        // <LoginForm Login={Login} error={error} />
+        <LoginForm />
       )}
-      )<></>
+      <></>
       {/* <LoginForm></LoginForm> */}
     </div>
   );

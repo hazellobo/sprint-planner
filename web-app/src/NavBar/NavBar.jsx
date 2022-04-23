@@ -24,6 +24,10 @@ class NavBarC extends React.Component {
   // }
   openModal = () => this.setState({ isOpen: true });
   closeModal = () => this.setState({ isOpen: false });
+  logout = (e) => {
+    e.preventDefault();
+    window.localStorage.clear();
+  }
   render() {
     return (
       <>
@@ -58,7 +62,7 @@ class NavBarC extends React.Component {
                   id="navbarScrollingDropdown"
                   align={"end"}
                 >
-                  <NavDropdown.Item href="#action3">Logout</NavDropdown.Item>
+                  <NavDropdown.Item href="#action3" onClick={this.logout}>Logout</NavDropdown.Item>
                   <NavDropdown.Item href="#action4">
                     Another action
                   </NavDropdown.Item>

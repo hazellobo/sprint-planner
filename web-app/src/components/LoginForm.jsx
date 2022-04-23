@@ -3,18 +3,32 @@ import './Login.scss';
 import Button from "react-bootstrap/Button";
 
 function LoginForm({ Login, error }) {
-  const [details, setDetails] = useState({ name: "", email: "", password: "" });
-  const submitHandler = (e) => {
+  const [details, setDetails] = useState({ emailId: "", password: "" });
+  
+  const submitHandler = async (e) => {
     e.preventDefault();
+    const obj = details;
 
-    Login(details);
+    await fetch(`http://localhost:9000/api/users/login`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(obj),
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          window.localStorage.setItem('emailId',details.emailId)
+        }
+        return response.json();
+      })
   };
   return (
     <form onSubmit={submitHandler}>
       <div className="form-inner">
         <h2>Login</h2>
         {error !== "" ? <div className="error">{error}</div> : ""}
-        <div className="form-group">
+        {/* <div className="form-group">
           <label htmlFor="name">Name: </label>
           <input
             type="text"
@@ -23,14 +37,14 @@ function LoginForm({ Login, error }) {
             onChange={(e) => setDetails({ ...details, name: e.target.value })}
             value={details.name}
           />
-        </div>
+        </div> */}
         <div className="form-group">
           <label htmlFor="email">Email: </label>
           <input
             type="email"
-            name="email"
-            id="email"
-            onChange={(e) => setDetails({ ...details, email: e.target.value })}
+            name="emailId"
+            id="emailId"
+            onChange={(e) => setDetails({ ...details, emailId: e.target.value })}
             value={details.email}
           />
         </div>

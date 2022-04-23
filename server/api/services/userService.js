@@ -28,27 +28,6 @@ export const userExists = (emailId) => {
 };
 
 /**
- * Get HashedPassword
- * @param {*} password
- * @returns
- */
-export const getHashedPassword = (password) => {
-  const salt = bcrypt.genSalt(10);
-  const hashed = bcrypt.hash(password, salt);
-  return hashed;
-};
-
-/**
- * Compares hashedPasswords
- * @param {*} password
- * @param {*} hashedPassword
- * @returns
- */
-export const compareHashedPassword = (password, hashedPassword) => {
-  return bcrypt.compare(password, hashedPassword);
-};
-
-/**
  * Token Generation
  * @param {*} id
  * @returns

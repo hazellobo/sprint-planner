@@ -1,4 +1,6 @@
 import * as userService from "../services/userService.js";
+import bcrypt from "bcryptjs";
+
 /**
  * Error handler function to display Error
  * @param {*} message
@@ -30,13 +32,14 @@ export const registerUser = async (req, res) => {
     }
 
     // Check if user already exists
-    const userExists = await userService.userExists(id);
+    const userExists = await userService.userExists(emailId);
     if (userExists) {
       errorHandler("User already exists", res);
     }
 
     // Generating hashed password
-    const hashedPassword = userService.getHashedPassword(password);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
     //Registering User
     const registeredUser = await userService.createUser(
@@ -46,7 +49,10 @@ export const registerUser = async (req, res) => {
     );
 
     if (registeredUser) {
-      setResponse({ user, token: generateToken(user.id) }, res);
+      setResponse(
+        { registeredUser, token: generateToken(registeredUser.id) },
+        res
+      );
     } else {
       errorHandler("Invalid user data", res);
     }
@@ -61,9 +67,11 @@ export const loginUser = async (req, res) => {
   const { emailId, password } = req.body;
 
   // Check if user with given emailId exists
-  const user = await userService.userExists(emailId)
-  if (user && (await userService.compareHashedPassword(password,user.password))) {
+  const user = await userService.userExists(emailId);
+
+  if (user && (await bcrypt.compare(password, user.password))) {
     setResponse({ user, token: generateToken(user.id) }, res);
+    console.log("Login Successful");
   } else {
     errorHandler("Invalid credentials", res);
   }

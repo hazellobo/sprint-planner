@@ -1,194 +1,213 @@
 import React from "react";
-import DropdownButton from "react-bootstrap/DropdownButton";
-import Dropdown from "react-bootstrap/Dropdown";
-import DropdownMenu from "react-bootstrap/DropdownMenu";
-import DropdownItem from "react-bootstrap/DropdownItem";
+import Form from "react-bootstrap/Form";
+import "bootstrap/dist/js/bootstrap.min.js";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import ticketApis from "../../services/tickets-service.js";
+import "./CreateTicket.scss";
 
 require("react-bootstrap/ModalHeader");
 
-class CreateTicket extends React.Component {
+class Project extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpen: true,
-      IssueType: "",
-      IssueDescription: "",
-      Reporter: "",
-      Assignee: "",
-      Priority: "",
+      isOpen: this.props.isOpen,
+      issueName: "",
+      issueType: [],
+      issueDescription: "",
+      reporter: "",
+      assignee: "",
+      priority: [],
+      users: [],
+      sprints: [],
+      // TicketSprint: "",
     };
+    this.handleTextInputChange = this.handleTextInputChange.bind(this);
+    this.handleTextAreaInputChange = this.handleTextAreaInputChange.bind(this);
   }
 
-  openModal = () => this.setState({ isOpen: true });
+  componentWillReceiveProps(nextProps) {
+    this.setState({ isOpen: nextProps.isOpen });
+  }
+
+  // openModal = () => this.setState({ isOpen: true });
   closeModal = () => this.setState({ isOpen: false });
 
-  /*
-      addTask = async () =>{
-        const { ProjectName, ProjectDescription, GithubURL, AddTeammates } = this.state
-        const payload = { ProjectName, ProjectDescription, GithubURL, AddTeammates}
-        await createProject(payload).then(res => {
-            this.setState({
-                ProjectName: '', 
-                ProjectDescription: '',
-                GithubURL: '',
-                AddTeammates: [],
-                isOpen: false
-            })
-        })
-        }*/
-
-  handleChange(event) {
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
-    this.setState({
-      [name]: value.split(","),
-    });
-    console.log(this.state.AddTeammates);
+  addTask() {
+    console.log(this.state);
+    const payload = {
+      name: this.name.value,
+      description: this.description.value,
+      ticketType: [this.type.value],
+      createdBy: this.reporter.value,
+      assignedTo: this.assignee.value,
+      priority: [this.priority.value],
+      status: ["Open"],
+    };
+    console.log(payload);
+    ticketApis.createTicket(payload).then((result) => result.json());
+    this.closeModal();
   }
 
-  handleIssueSelect(e) {
-    this.setState({
-      IssueType: e.eventKey,
-    });
-  }
+  // handleChange(event) {
+  //   const target = event.target;
+  //   const value = target.value;
+  //   const name = target.name;
+  //   console.log(event);
+  //   this.setState({
+  //     [name]: value,
+  //   });
+  // }
 
-  handleReporterSelect(e) {
-    this.setState({
-      Reporter: e.eventKey,
-    });
-  }
+  handleIssueType = (e) => {
+    this.setState.issueType = e;
+  };
 
-  handleAssigneeSelect(e) {
+  handleTextAreaInputChange(event) {
     this.setState({
-      Assignee: e.eventKey,
+      issueDescription: event,
     });
   }
 
-  handlePrioritySelect(e) {
+  handleTextInputChange(event) {
     this.setState({
-      Priority: e.eventKey,
+      issueName: event,
+    });
+  }
+
+  handleReporter(event) {
+    this.setState({
+      assignee: event,
+    });
+  }
+
+  handleAssignee(event) {
+    this.setState({
+      reporter: event,
+    });
+  }
+
+  handlePriority(event) {
+    this.setState({
+      priority: event,
+    });
+  }
+
+  handleSprint(event) {
+    this.setState({
+      sprint: event,
     });
   }
 
   render() {
     return (
-      <div className="App">
-        <div className="container p-5">
-          <button
-            type="button"
-            className="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#exampleModal"
-          >
-            User Login
-          </button>
-
-          <div
-            className="modal fade"
-            id="exampleModal"
-            aria-labelledby="exampleModalLabel"
-            aria-hidden="true"
-          >
-            <div className="modal-dialog">
-              <div className="modal-content">
-                <div className="modal-body">
-                  <form>
-                    <div className="mb-3">
-                      <label className="form-label">Description</label>
-                      <textarea
-                        className="form-control"
-                        name="IssueDescription"
-                        id="IssueDescription"
-                        value={this.state.IssueDescription}
-                        onChange={(event) => this.handleChange(event)}
-                        aria-describedby="emailHelp"
-                      />
-                    </div>
-
-                    <div className="Issue Type">
-                      <label>Select Issue :</label>
-                      <DropdownButton
-                        alignRight
-                        title="Dropdown right"
-                        id="dropdown-menu-align-right"
-                        onSelect={this.handleIssueSelect()}
-                      >
-                        <option selected>Issue Type</option>
-                        <Dropdown.Item eventKey="Bug">Bug</Dropdown.Item>
-                        <Dropdown.Item eventKey="Story">Story</Dropdown.Item>
-                        <Dropdown.Divider />
-                      </DropdownButton>
-                    </div>
-
-                    <div className="modal-body">
-                      <label>Reporter :</label>
-                      <DropdownButton
-                        alignRight
-                        title="Dropdown right"
-                        id="dropdown-menu-align-right"
-                        onSelect={this.handleReporterSelect}
-                      >
-                        <DropdownMenu>
-                          {this.users.map((size) => (
-                            <DropdownItem>{size}</DropdownItem>
-                          ))}
-                        </DropdownMenu>
-                      </DropdownButton>
-                    </div>
-
-                    <div className="modal-body">
-                      <label>Assignee :</label>
-                      <DropdownButton
-                        alignRight
-                        title="Dropdown right"
-                        id="dropdown-menu-align-right"
-                        onSelect={this.handleAssigneeSelect}
-                      >
-                        <DropdownMenu>
-                          {this.users.map((size) => (
-                            <DropdownItem>{size}</DropdownItem>
-                          ))}
-                        </DropdownMenu>
-                      </DropdownButton>
-                    </div>
-
-                    <div className="Issue Type">
-                      <label>Priority :</label>
-                      <DropdownButton
-                        alignRight
-                        title="Dropdown right"
-                        id="dropdown-menu-align-right"
-                        onSelect={this.handlePrioritySelect}
-                      >
-                        <Dropdown.Item eventKey="P1">P1</Dropdown.Item>
-                        <Dropdown.Item eventKey="P2">P2</Dropdown.Item>
-                        <Dropdown.Item eventKey="P3">P3</Dropdown.Item>
-                        <Dropdown.Item eventKey="P4">P4</Dropdown.Item>
-                        <Dropdown.Divider />
-                      </DropdownButton>
-                    </div>
-                  </form>
-                </div>
-                <div className="modal-footer">
-                  <button type="submit" className="btn btn-primary">
-                    Create Issue
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-warning"
-                    data-bs-dismiss="modal"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
+      <Modal show={this.state.isOpen} onHide={this.closeModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Create Ticket</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form>
+            <div className="mb-3">
+              <label className="form-label">Name</label>
+              <Form.Control
+                as="input"
+                onChange={this.handleTextInputChange.bind(this)}
+                ref={(c) => (this.name = c)}
+              />
             </div>
-          </div>
-        </div>
-      </div>
+            <div className="mb-3">
+              <label className="form-label">Description</label>
+              <Form.Control
+                as="textarea"
+                rows="3"
+                name="address"
+                onChange={this.handleTextAreaInputChange.bind(this)}
+                ref={(c) => (this.description = c)}
+              />
+            </div>
+            <div className="mb-3 dropdown-ct">
+              <label className="form-label">Issue Type</label>
+              <select
+                onChange={this.handleIssueType.bind(this)}
+                ref={(c) => (this.type = c)}
+              >
+                <option value="Task">Task</option>
+                <option value="Bug">Bug</option>
+                <option value="Story">Story</option>
+              </select>
+            </div>
+            <div className="mb-3 dropdown-ct">
+              <label className="form-label">Reporter</label>
+              <select
+                onChange={this.handleReporter.bind(this)}
+                ref={(c) => (this.reporter = c)}
+              >
+                <option value="Aravind">Aravind</option>
+                {/* {this.state.users.map((User) => {
+      return <option value={User}> {User} </option>;
+    })} */}
+              </select>
+            </div>
+            <div className="mb-3 dropdown-ct">
+              <label className="form-label">Assignee</label>
+              <select
+                onChange={this.handleAssignee.bind(this)}
+                ref={(c) => (this.assignee = c)}
+              >
+                <option value="Aravind">Aravind</option>
+                {/* <option value="Medium">Medium</option>
+                    <option value="Low">Low</option> */}
+                {/* {this.state.users.map((User) => {
+      return <option value={User}> {User} </option>;
+    })} */}
+              </select>
+            </div>
+
+            <div className="mb-3 dropdown-ct">
+              <label className="form-label">Priority</label>
+              <select
+                onChange={this.handlePriority.bind(this)}
+                ref={(c) => (this.priority = c)}
+              >
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+              </select>
+            </div>
+
+            <div className="mb-3 dropdown-ct">
+              <label className="form-label">Sprint</label>
+              <select
+                onChange={this.handleSprint.bind(this)}
+                ref={(c) => (this.sprint = c)}
+              >
+                <option value="Sprint 1">Sprint 1</option>
+                <option value="backlog">Backlog</option>
+                <option value="future">Future</option>
+                {/* {this.state.sprints.map((Sprint) => {
+      return <option value={Sprint}> {Sprint} </option>;
+    })} */}
+              </select>
+            </div>
+          </form>
+          {/* </div> */}
+        </Modal.Body>
+        <Modal.Footer>
+          <button
+            type="submit"
+            className="btn btn-primary"
+            onClick={this.addTask.bind(this)}
+          >
+            Add
+          </button>
+          <Button variant="secondary" onClick={this.closeModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     );
   }
 }
 
-export default CreateTicket;
+export default Project;

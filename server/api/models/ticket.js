@@ -16,7 +16,7 @@ const TicketSchema = new Mongoose.Schema(
       required: "Created By is required",
     },
     assignedTo: {
-      type: Array,
+      type: String,
       required: "Assigned To is required",
     },
     status: {
@@ -35,7 +35,7 @@ const TicketSchema = new Mongoose.Schema(
         },
       ],
     },
-    TicketType: {
+    ticketType: {
       type: [
         {
           type: String,

@@ -18,6 +18,12 @@ const ProjectSchema = new Mongoose.Schema(
     scrumTeam: {
       type: Array,
     },
+    scrumDuration: {
+      type: Array
+    },
+    scrumIds: {
+      type: Array
+    }
   },
   {
     versionKey: false,

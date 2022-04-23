@@ -7,7 +7,7 @@ import "./SideBar.scss";
 import { IconContext } from "react-icons";
 
 function SideBar() {
-  const [sidebar, setSidebar] = useState(true);
+  const [sidebar, setSidebar] = useState(false);
 
   const showSidebar = () => setSidebar(!sidebar);
 
@@ -18,6 +18,7 @@ function SideBar() {
           <Link to="#" className="menu-bars">
             <FaIcons.FaBars onClick={showSidebar} />
           </Link>
+          <h3 className="user-welcome">Welcome user !</h3>
         </div>
         <nav className={sidebar ? "nav-menu active" : "nav-menu"}>
           <ul className="nav-menu-items" onClick={showSidebar}>

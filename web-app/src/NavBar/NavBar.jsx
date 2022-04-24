@@ -5,8 +5,8 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
-import FormControl from "react-bootstrap/FormControl";
+// import Form from "react-bootstrap/Form";
+// import FormControl from "react-bootstrap/FormControl";
 import CreateTicket from "./CreateTicket/CreateTicket";
 
 class NavBarC extends React.Component {
@@ -17,7 +17,7 @@ class NavBarC extends React.Component {
     };
   }
   // state = {};
-  handleModal = () => this.setState({ modalState: true });
+  // handleModal = () => this.setState({ modalState: true });
   // handleModal() {
   //   this.setState({modalState: })
   //   this.state.modalState = !this.state.modalState;
@@ -43,7 +43,7 @@ class NavBarC extends React.Component {
               Create Ticket
             </Button>
             <Navbar.Collapse id="navbarScroll">
-              <Form className="d-flex">
+              {/* <Form className="d-flex">
                 <FormControl
                   type="search"
                   placeholder="Search"
@@ -51,7 +51,7 @@ class NavBarC extends React.Component {
                   aria-label="Search"
                 />
                 <Button variant="outline-success">Search</Button>
-              </Form>
+              </Form> */}
               <Nav>
                 <NavDropdown
                   title="Profile"

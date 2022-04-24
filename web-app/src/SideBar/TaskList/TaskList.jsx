@@ -9,6 +9,7 @@ import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import Button from "react-bootstrap/Button";
 import * as AiIcons from "react-icons/ai";
 import * as VscIcons from "react-icons/vsc";
+import CreateTicket from "./../../NavBar/CreateTicket/CreateTicket";
 
 class TaskList extends React.Component {
   constructor(props) {
@@ -21,11 +22,20 @@ class TaskList extends React.Component {
         sortable: true,
         filter: true,
         resizable: true,
-        editable: true,
+        // editable: true,
+        isOpen: false,
+        isEditMode: false,
+        issueName: "",
+        issueType: [],
+        issueDescription: "",
+        reporter: "",
+        assignee: "",
+        priority: [],
+        taskId: "",
       },
       columnDefs: [
         { field: "name" },
-        { field: "description", width: 400, editable: true },
+        { field: "description" },
         { field: "assignedTo" },
         { field: "status" },
         { field: "ticketType" },
@@ -41,11 +51,22 @@ class TaskList extends React.Component {
             }
           },
         },
+        {
+          field: "edit",
+          cellRenderer: () => {
+            return (
+              <Button
+                variant="light"
+                onClick={this.getSelectedRowData.bind(this)}
+              >
+                <AiIcons.AiFillEdit />
+              </Button>
+            );
+          },
+        },
       ],
       rowData: [],
     };
-    this.onTypeChange = this.onTypeChange.bind(this);
-    this.onStatusChange = this.onStatusChange.bind(this);
   }
 
   componentDidMount() {
@@ -63,21 +84,17 @@ class TaskList extends React.Component {
   getSelectedRowData = () => {
     let selectedNodes = this.gridApi.getSelectedNodes();
     let selectedData = selectedNodes.map((node) => node.data);
-    console.log("log data", [...selectedData], selectedData[0].id);
-    // alert(`Selected Nodes:\n${JSON.stringify(selectedData)}`);
-    ticketApis
-      .updateTicket(selectedData[0].id, selectedData[0])
-      .then((result) => result.json())
-      .then((json) => console.log(json));
-    // .then((rowData) => this.setState({ rowData }));
-  };
-
-  onTypeChange = (color) => {
-    console.log("type Change", color);
-  };
-
-  onStatusChange = (color) => {
-    console.log("Color Change", color);
+    this.setState({
+      isOpen: true,
+      isEditMode: true,
+      issueName: selectedData[0].name,
+      issueDescription: selectedData[0].description,
+      priority: selectedData[0].priority[0],
+      assignee: selectedData[0].assignee,
+      reporter: selectedData[0].reporter,
+      issueType: selectedData[0].ticketType[0],
+      taskId: selectedData[0].id,
+    });
   };
 
   render() {
@@ -107,6 +124,17 @@ class TaskList extends React.Component {
             rowSelection={"single"}
             // frameworkComponents={this.state.frameworkComponents}
           ></AgGridReact>
+          <CreateTicket
+            isOpen={this.state.isOpen}
+            isEditMode={this.state.isEditMode}
+            issueName={this.state.issueName}
+            issueDescription={this.state.issueDescription}
+            priority={[this.state.priority]}
+            assignee={this.state.assignee}
+            reporter={this.state.reporter}
+            issueType={[this.state.issueType]}
+            taskId={this.state.taskId}
+          ></CreateTicket>
         </div>
       </div>
     );

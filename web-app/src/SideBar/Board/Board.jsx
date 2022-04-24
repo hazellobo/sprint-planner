@@ -7,6 +7,10 @@ import "./Board.scss";
 import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
 import * as AiIcons from "react-icons/ai";
+import * as BiIcons from "react-icons/bi";
+import * as BsIcons from "react-icons/bs";
+import * as VscIcons from "react-icons/vsc";
+import * as MdIcons from "react-icons/md";
 import { connect } from "react-redux";
 import ReactCardFlip from "react-card-flip";
 import DoneReport from "../IndividualReports/DoneReport/DoneReport";
@@ -138,7 +142,23 @@ class BoardComponent extends React.Component {
     if (ticketDone.length === 0) {
       <span>No ticket in done state</span>;
     } else {
+      let type;
+      let priority;
       ticketDoneOptions = ticketDone.map((ticket) => {
+        if (ticket.ticketType[0] === "Bug") {
+          type = <AiIcons.AiOutlineBug />;
+        } else if (ticket.ticketType[0] === "Task") {
+          type = <BiIcons.BiTask />;
+        } else {
+          type = <BsIcons.BsFillBookmarkFill />;
+        }
+        if (ticket.priority[0] === "High") {
+          priority = <AiIcons.AiOutlineArrowUp />;
+        } else if (ticket.priority[0] === "Medium") {
+          priority = <VscIcons.VscThreeBars />;
+        } else {
+          priority = <AiIcons.AiOutlineArrowDown />;
+        }
         return (
           <ListGroup.Item>
             <Card>
@@ -149,7 +169,7 @@ class BoardComponent extends React.Component {
                 </Card.Subtitle>
                 <div className="card-text-div">
                   <Card.Text>
-                    {ticket.status[0]} {ticket.priority[0]}
+                    {priority} {type}
                   </Card.Text>
                   <Card.Text>{ticket.assignedTo}</Card.Text>
                 </div>
@@ -163,7 +183,23 @@ class BoardComponent extends React.Component {
     if (ticketInProgress.length === 0) {
       <span>No ticket in done state</span>;
     } else {
+      let type;
+      let priority;
       ticketInProgressOptions = ticketInProgress.map((ticket) => {
+        if (ticket.ticketType[0] === "Bug") {
+          type = <AiIcons.AiOutlineBug />;
+        } else if (ticket.ticketType[0] === "Task") {
+          type = <BiIcons.BiTask />;
+        } else {
+          type = <BsIcons.BsFillBookmarkFill />;
+        }
+        if (ticket.priority[0] === "High") {
+          priority = <AiIcons.AiOutlineArrowUp />;
+        } else if (ticket.priority[0] === "Medium") {
+          priority = <VscIcons.VscThreeBars />;
+        } else {
+          priority = <AiIcons.AiOutlineArrowDown />;
+        }
         return (
           <ListGroup.Item>
             <Card>
@@ -174,7 +210,7 @@ class BoardComponent extends React.Component {
                 </Card.Subtitle>
                 <div className="card-text-div">
                   <Card.Text>
-                    {ticket.status[0]} {ticket.priority[0]}
+                    {priority} {type}
                   </Card.Text>
                   <Card.Text>{ticket.assignedTo}</Card.Text>
                 </div>
@@ -188,7 +224,23 @@ class BoardComponent extends React.Component {
     if (ticketOpen.length === 0) {
       <span>No ticket in done state</span>;
     } else {
+      let type;
+      let priority;
       ticketOpenOptions = ticketOpen.map((ticket) => {
+        if (ticket.ticketType[0] === "Bug") {
+          type = <AiIcons.AiOutlineBug />;
+        } else if (ticket.ticketType[0] === "Task") {
+          type = <BiIcons.BiTask />;
+        } else {
+          type = <BsIcons.BsFillBookmarkFill />;
+        }
+        if (ticket.priority[0] === "High") {
+          priority = <AiIcons.AiOutlineArrowUp />;
+        } else if (ticket.priority[0] === "Medium") {
+          priority = <VscIcons.VscThreeBars />;
+        } else {
+          priority = <AiIcons.AiOutlineArrowDown />;
+        }
         return (
           <ListGroup.Item>
             <Card>
@@ -199,7 +251,7 @@ class BoardComponent extends React.Component {
                 </Card.Subtitle>
                 <div className="card-text-div">
                   <Card.Text>
-                    {ticket.status[0]} {ticket.priority[0]}
+                    {priority} {type}
                   </Card.Text>
                   <Card.Text>{ticket.assignedTo}</Card.Text>
                 </div>
@@ -258,7 +310,7 @@ class BoardComponent extends React.Component {
                   variant="light"
                   onClick={this.handleOpenTicClick.bind(this)}
                 >
-                  Flip
+                  <MdIcons.MdOutlineFlipCameraAndroid />
                 </Button>
               </div>
               <div>
@@ -270,7 +322,7 @@ class BoardComponent extends React.Component {
                   variant="light"
                   onClick={this.handleOpenTicClick.bind(this)}
                 >
-                  Flip
+                  <MdIcons.MdOutlineFlipCameraAndroid />
                 </Button>
               </div>
             </ReactCardFlip>
@@ -286,7 +338,7 @@ class BoardComponent extends React.Component {
               <div>
                 <ListGroup variant="flush">{ticketInProgressOptions}</ListGroup>
                 <Button variant="light" onClick={this.handleClick.bind(this)}>
-                  Flip
+                  <MdIcons.MdOutlineFlipCameraAndroid />
                 </Button>
               </div>
               <div>
@@ -295,7 +347,7 @@ class BoardComponent extends React.Component {
                   inProgressTicket={ticketInProgress.length}
                 />
                 <Button variant="light" onClick={this.handleClick.bind(this)}>
-                  Flip
+                  <MdIcons.MdOutlineFlipCameraAndroid />
                 </Button>
               </div>
             </ReactCardFlip>
@@ -314,7 +366,7 @@ class BoardComponent extends React.Component {
                   variant="light"
                   onClick={this.handleDoneTicClick.bind(this)}
                 >
-                  Flip
+                  <MdIcons.MdOutlineFlipCameraAndroid />
                 </Button>
               </div>
               <div>
@@ -326,7 +378,7 @@ class BoardComponent extends React.Component {
                   variant="light"
                   onClick={this.handleDoneTicClick.bind(this)}
                 >
-                  Flip
+                  <MdIcons.MdOutlineFlipCameraAndroid />
                 </Button>
               </div>
             </ReactCardFlip>

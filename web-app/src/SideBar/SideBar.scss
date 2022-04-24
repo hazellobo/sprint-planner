@@ -12,19 +12,20 @@
 }
 
 .nav-menu {
-  background-color: #ffffff;
-  width: 220px;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  position: fixed;
-  top: 3.7rem;
-  left: -100%;
-  transition: 850ms;
+  // background-color: #ffffff;
+  // width: 220px;
+  // height: 100%;
+  // display: flex;
+  // justify-content: center;
+  // // position: fixed;
+  // top: 3.7rem;
+  // left: -100%;
+  // transition: 850ms;
   border-right: 3px solid #f1f1f3;
-  z-index: 1;
+  // z-index: 1;
   ul {
     padding-left: 0;
+    margin-top: 2rem;
   }
 }
 .nav-menu.active {
@@ -61,18 +62,18 @@
   width: 100%;
 }
 
-.navbar-toggle {
-  background-color: #ffffff;
-  width: 100%;
-  height: 80px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
+// .navbar-toggle {
+//   background-color: #ffffff;
+//   width: 100%;
+//   height: 80px;
+//   display: flex;
+//   justify-content: flex-start;
+//   align-items: center;
+// }
 
 span {
   margin-left: 16px;
 }
-.user-welcome {
-  margin: 0.625rem 0 0 3rem;
-}
+// .user-welcome {
+//   margin: 0.625rem 0 0 3rem;
+// }

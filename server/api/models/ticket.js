@@ -23,7 +23,7 @@ const TicketSchema = new Mongoose.Schema(
       type: [
         {
           type: String,
-          enum: ["Open", "In Progress", "Closed"],
+          enum: ["Open", "In Progress", "Done"],
         },
       ],
     },
@@ -43,6 +43,10 @@ const TicketSchema = new Mongoose.Schema(
         },
       ],
     },
+    sprint: {
+      type: Array,
+      required: "Enter the sprint the ticket should belong to"
+    }
   },
   {
     versionKey: false,

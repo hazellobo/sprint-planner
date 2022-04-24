@@ -1,4 +1,15 @@
+
 import * as service from "../services/ticket-service.js";
+import nodemailer from 'nodemailer';
+//var nodemailer = require("nodemailer");
+
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'inventorymanagementaas@gmail.com',
+    pass: 'aas051997'
+  }
+});
 
 // set the success response
 const setSuccessResponse = (obj, response) => {
@@ -19,7 +30,23 @@ export const post = async (request, response) => {
   try {
     const payload = request.body;
     const ticket = await service.save(payload);
-    // set the success response
+
+    var mailOptions = {
+      from: 'inventorymanagementaas@gmail.com',
+      //to: payload.assignedTo,
+      to: 'polepeddiaravind@gmail.com',
+      subject: 'A ticket has been assigned to you',
+      html: '<h1>Greetings from SprintManager</h1><br><p>The ticket: '+payload.name+' has been assigned to you</p><br><p>ReportedBy:'+payload.createdBy+' </p><br><p>Description:'+payload.description+'</p><br><p>Ticket Type: '+payload.ticketType[0]+'</p>'
+    };
+
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+        // set the success response
     setSuccessResponse(ticket, response);
   } catch (error) {
     setErrorResponse(error, response);

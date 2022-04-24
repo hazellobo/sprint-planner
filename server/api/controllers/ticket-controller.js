@@ -93,6 +93,22 @@ export const update = async (request, response) => {
     const updated = { ...request.body };
     updated.id = id;
     const ticket = await service.update(updated);
+
+    var mailOptions = {
+      from: 'inventorymanagementaas@gmail.com',
+      //to: payload.assignedTo,
+      to: 'polepeddiaravind@gmail.com',
+      subject: 'A ticket has been assigned to you',
+      html: '<h1>Greetings from SprintManager</h1><br><p>The ticket: '+updated.name+' has been assigned to you</p><br><p>ReportedBy:'+updated.createdBy+' </p><br><p>Description:'+updated.description+'</p><br><p>Ticket Type: '+updated.ticketType[0]+'</p>'
+    };
+
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
     // set the success response
     setSuccessResponse(ticket, response);
   } catch (error) {

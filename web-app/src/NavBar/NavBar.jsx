@@ -8,12 +8,14 @@ import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import FormControl from "react-bootstrap/FormControl";
 import CreateTicket from "./CreateTicket/CreateTicket";
+import Sprint from "./CreateSprint/CreateSprint";
 
 class NavBarC extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isOpen: false,
+      isSprintOpen: false
     };
   }
   // state = {};
@@ -24,6 +26,9 @@ class NavBarC extends React.Component {
   // }
   openModal = () => this.setState({ isOpen: true });
   closeModal = () => this.setState({ isOpen: false });
+
+  openSprintModal = () => this.setState({ isSprintOpen: true });
+  closeSprintModal = () => this.setState({ isSprintOpen: false });
   render() {
     return (
       <>
@@ -41,6 +46,9 @@ class NavBarC extends React.Component {
             </Navbar.Brand>
             <Button variant="primary" onClick={this.openModal}>
               Create Ticket
+            </Button>
+            <Button variant="primary" onClick={this.openSprintModal}>
+              Create Sprint
             </Button>
             <Navbar.Collapse id="navbarScroll">
               <Form className="d-flex">
@@ -72,6 +80,7 @@ class NavBarC extends React.Component {
           </Container>
         </Navbar>
         <CreateTicket isOpen={this.state.isOpen}></CreateTicket>
+        <Sprint isSprintOpen={this.state.isSprintOpen}></Sprint>
       </>
     );
   }

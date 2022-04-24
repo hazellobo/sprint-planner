@@ -14,7 +14,7 @@ class Project extends React.Component {
     this.state = {
       isOpen: this.props.isOpen,
       issueName: "",
-      issueType: [],
+      issueType: "",
       issueDescription: "",
       reporter: "",
       assignee: "",
@@ -50,15 +50,6 @@ class Project extends React.Component {
     this.closeModal();
   }
 
-  // handleChange(event) {
-  //   const target = event.target;
-  //   const value = target.value;
-  //   const name = target.name;
-  //   console.log(event);
-  //   this.setState({
-  //     [name]: value,
-  //   });
-  // }
 
   handleIssueType = (e) => {
     this.setState.issueType = e;
@@ -66,7 +57,7 @@ class Project extends React.Component {
 
   handleTextAreaInputChange(event) {
     this.setState({
-      issueDescription: event,
+      name: event,
     });
   }
 

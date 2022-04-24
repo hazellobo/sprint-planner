@@ -3,7 +3,7 @@ import Mongoose from "mongoose";
 //Creation of a Sprint Schema
 const SprintSchema = new Mongoose.Schema(
   {
-    name: {
+    sprintName: {
       type: String,
       required: "Email Id is required",
     },
@@ -14,6 +14,10 @@ const SprintSchema = new Mongoose.Schema(
           enum: ["Active", "Inactive"],
         },
       ],
+    },
+    sprintDuration: {
+      type: String,
+      default: "1 Week",
     },
     startDate: {
       type: Date,

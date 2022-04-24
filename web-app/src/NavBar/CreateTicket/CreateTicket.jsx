@@ -201,7 +201,6 @@ class Project extends React.Component {
                 ref={(c) => (this.type = c)}
                 value={this.state.issueType}
               >
-                <option value="select">Select</option>
                 <option value="Task">Task</option>
                 <option value="Bug">Bug</option>
                 <option value="Story">Story</option>

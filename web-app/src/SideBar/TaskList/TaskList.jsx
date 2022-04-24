@@ -37,10 +37,11 @@ class TaskList extends React.Component {
         { field: "name" },
         { field: "description" },
         { field: "assignedTo" },
-        { field: "status" },
-        { field: "ticketType" },
+        { field: "status", width: "150" },
+        { field: "ticketType", width: "175" },
         {
           field: "priority",
+          width: "150",
           cellRenderer: function (params) {
             if (params.value == "Low") {
               return <AiIcons.AiOutlineArrowDown />;
@@ -53,6 +54,7 @@ class TaskList extends React.Component {
         },
         {
           field: "edit",
+          width: "150",
           cellRenderer: () => {
             return (
               <Button
@@ -68,7 +70,7 @@ class TaskList extends React.Component {
       rowData: [],
     };
   }
-
+  openModal = () => this.setState({ isOpen: true });
   componentDidMount() {
     ticketApis
       .getAllTickets()
@@ -97,6 +99,8 @@ class TaskList extends React.Component {
     });
   };
 
+  handleSprint() {}
+
   render() {
     return (
       <div className="tasklist">
@@ -106,8 +110,8 @@ class TaskList extends React.Component {
             <option value="saab">Backlog</option>
             <option value="opel">Future sprint</option>
           </select>
-          <Button variant="primary" onClick={this.getSelectedRowData}>
-            Edit Ticket
+          <Button variant="primary" onClick={this.handleSprint}>
+            Start Sprint
           </Button>
         </div>
 
@@ -122,20 +126,24 @@ class TaskList extends React.Component {
             onCellValueChanged={this.getSelectedRowData}
             onGridReady={this.onGridReady}
             rowSelection={"single"}
-            // frameworkComponents={this.state.frameworkComponents}
           ></AgGridReact>
-          <CreateTicket
-            isOpen={this.state.isOpen}
-            isEditMode={this.state.isEditMode}
-            issueName={this.state.issueName}
-            issueDescription={this.state.issueDescription}
-            priority={[this.state.priority]}
-            assignee={this.state.assignee}
-            reporter={this.state.reporter}
-            issueType={[this.state.issueType]}
-            taskId={this.state.taskId}
-          ></CreateTicket>
         </div>
+        <div className="create-ticket-btn">
+          <Button variant="primary" onClick={this.openModal}>
+            Create Ticket
+          </Button>
+        </div>
+        <CreateTicket
+          isOpen={this.state.isOpen}
+          isEditMode={this.state.isEditMode}
+          issueName={this.state.issueName}
+          issueDescription={this.state.issueDescription}
+          priority={[this.state.priority]}
+          assignee={this.state.assignee}
+          reporter={this.state.reporter}
+          issueType={[this.state.issueType]}
+          taskId={this.state.taskId}
+        ></CreateTicket>
       </div>
     );
   }

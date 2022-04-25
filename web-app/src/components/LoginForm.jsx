@@ -1,37 +1,67 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import './Login.scss';
 import Button from "react-bootstrap/Button";
+import Dashboard from './Dashboard';
 
-function LoginForm({ Login, error }) {
-  const [details, setDetails] = useState({ name: "", email: "", password: "" });
-  const submitHandler = (e) => {
-    e.preventDefault();
+function LoginForm() {
+  const [emailId, setEmailId] = useState("");
+  const [password, setPassword] = useState("");
+  const [token, setToken] = useState();
+  const [error, setError] = useState("");
 
-    Login(details);
-  };
+  //checks if user is logged in on everytime page loads
+  useEffect(() => {
+    const loggedInUserToken = localStorage.getItem('userToken');
+    if (loggedInUserToken) {
+      const foundUserToken = JSON.stringify(loggedInUserToken);
+      setToken(foundUserToken);
+    }
+  }, []);
+
+
+  //on submit button
+  const submitHandler = async (e) => {
+      e.preventDefault();
+      const obj = { emailId, password };
+    
+      await fetch(`http://localhost:9000/api/users/login`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(obj),
+      })
+        .then((response) =>
+          response.json()).then((result) => {
+            if (!result.hasOwnProperty("error")) {
+               setToken(result.token);
+               localStorage.setItem('userToken', result.token);
+            } else {
+              setError(result.error);
+            }
+           
+          });
+    } 
+
+  //if user exists only then allow to view dashboard
+  if (token) {
+    console.log("User token",token)
+    return <Dashboard></Dashboard>
+  }
+
   return (
     <form onSubmit={submitHandler}>
       <div className="form-inner">
         <h2>Login</h2>
         {error !== "" ? <div className="error">{error}</div> : ""}
         <div className="form-group">
-          <label htmlFor="name">Name: </label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            onChange={(e) => setDetails({ ...details, name: e.target.value })}
-            value={details.name}
-          />
-        </div>
-        <div className="form-group">
           <label htmlFor="email">Email: </label>
           <input
             type="email"
-            name="email"
-            id="email"
-            onChange={(e) => setDetails({ ...details, email: e.target.value })}
-            value={details.email}
+            name="emailId"
+            id="emailId"
+            onChange={(e) => setEmailId(e.target.value)}
+            value={emailId}
           />
         </div>
         <div className="form-group">
@@ -41,9 +71,9 @@ function LoginForm({ Login, error }) {
             name="password"
             id="password"
             onChange={(e) =>
-              setDetails({ ...details, password: e.target.value })
+              setPassword( e.target.value)
             }
-            value={details.password}
+            value={password}
           />
         </div>
         <Button

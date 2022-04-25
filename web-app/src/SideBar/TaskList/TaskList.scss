@@ -7,12 +7,13 @@
 }
 .tasklist {
   padding: 1rem;
-  height: 95%;
+  height: 93%;
   width: 100%;
   select {
     border: 1px solid #ced4da;
     height: 38px;
     border-radius: 0.25rem;
+    width: 10rem;
   }
 }
 .ag-header-cell-label {
@@ -24,7 +25,10 @@
   align-items: center !important;
 }
 .edit-ticket-btn {
-  margin-bottom: 0.625rem;
+  margin-bottom: 1.5rem;
   display: flex;
   justify-content: space-between;
+}
+.create-ticket-btn {
+  padding-top: 5px;
 }

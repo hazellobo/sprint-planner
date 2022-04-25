@@ -64,16 +64,20 @@ export const registerUser = async (req, res) => {
 // @desc    Authenticate a user
 // @route   POST /api/users/login
 export const loginUser = async (req, res) => {
-  const { emailId, password } = req.body;
+  try {
+    const { emailId, password } = req.body;
 
-  // Check if user with given emailId exists
-  const user = await userService.userExists(emailId);
+    // Check if user with given emailId exists
+    const user = await userService.userExists(emailId);
 
-  if (user && (await bcrypt.compare(password, user.password))) {
-    setResponse({ user, token: generateToken(user.id) }, res);
-    console.log("Login Successful");
-  } else {
-    errorHandler("Invalid credentials", res);
+    if (user && (await bcrypt.compare(password, user.password))) {
+      setResponse({ user, token: generateToken(user.id) }, res);
+      console.log("Login Successful");
+    } else {
+      errorHandler("Invalid Credentials", res);
+    }
+  } catch (error) {
+    errorHandler(error.message, res);
   }
 };
 

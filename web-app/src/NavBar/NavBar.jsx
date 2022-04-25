@@ -9,6 +9,7 @@ import Container from "react-bootstrap/Container";
 // import FormControl from "react-bootstrap/FormControl";
 import CreateTicket from "./CreateTicket/CreateTicket";
 import Sprint from "./CreateSprint/CreateSprint";
+import LoginForm from "../components/LoginForm";
 
 class NavBarC extends React.Component {
   constructor(props) {
@@ -28,7 +29,9 @@ class NavBarC extends React.Component {
   closeModal = () => this.setState({ isOpen: false });
   logout = (e) => {
     e.preventDefault();
-    window.localStorage.clear();
+    localStorage.removeItem('userToken');
+    console.log("reoved token")
+    return <LoginForm />
   }
   openSprintModal = () => this.setState({ isSprintOpen: true });
   closeSprintModal = () => this.setState({ isSprintOpen: false });
@@ -70,7 +73,7 @@ class NavBarC extends React.Component {
                   id="navbarScrollingDropdown"
                   align={"end"}
                 >
-                  <NavDropdown.Item href="#action3" onClick={this.logout}>Logout</NavDropdown.Item>
+                  <NavDropdown.Item href="#" onClick={this.logout}>Logout</NavDropdown.Item>
                   <NavDropdown.Item href="#action4">
                     Another action
                   </NavDropdown.Item>

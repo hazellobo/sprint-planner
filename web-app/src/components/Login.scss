@@ -42,9 +42,10 @@ form:after {
 form .form-inner{
   position: relative;
   display: block;
-  background-color: #FFF;
-  padding: 30px;
+  background-color: #ffffff;
+  padding: 500px;
   z-index: 2;
+  top: -300px;
 }
 
 form .form-inner h2{

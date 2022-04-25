@@ -6,6 +6,7 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Container from "react-bootstrap/Container";
 import Sprint from "./CreateSprint/CreateSprint";
+import LoginForm from "../components/LoginForm";
 
 class NavBarC extends React.Component {
   constructor(props) {
@@ -16,8 +17,25 @@ class NavBarC extends React.Component {
     };
   }
 
+  // state = {};
+  // handleModal = () => this.setState({ modalState: true });
+  // handleModal() {
+  //   this.setState({modalState: })
+  //   this.state.modalState = !this.state.modalState;
+  // }
+  openModal = () => this.setState({ isOpen: true });
+  closeModal = () => this.setState({ isOpen: false });
+
+  logout = (e) => {
+    e.preventDefault();
+    localStorage.removeItem('userToken');
+    console.log("reoved token")
+    return <LoginForm />
+  }
+
   openSprintModal = () => this.setState({ isSprintOpen: true });
   closeSprintModal = () => this.setState({ isSprintOpen: false });
+
   render() {
     return (
       <>
@@ -43,7 +61,7 @@ class NavBarC extends React.Component {
                   id="navbarScrollingDropdown"
                   align={"end"}
                 >
-                  <NavDropdown.Item href="#action3">Logout</NavDropdown.Item>
+                  <NavDropdown.Item href="#" onClick={this.logout}>Logout</NavDropdown.Item>
                   <NavDropdown.Item href="#action4">
                     Another action
                   </NavDropdown.Item>

@@ -1,5 +1,6 @@
-import * as userService from "../services/userService.js";
+import * as userService from "../services/user-service.js";
 import bcrypt from "bcryptjs";
+import User from "../models/user.js";
 
 /**
  * Error handler function to display Error
@@ -27,7 +28,7 @@ export const registerUser = async (req, res) => {
   try {
     const { name, emailId, password, role } = req.body;
 
-    if ((!name|| !emailId || !password || !role)) {
+    if (!name || !emailId || !password || !role) {
       errorHandler("Please add all fields", res);
     }
 
@@ -92,4 +93,14 @@ export const getMe = async (req, res) => {
 // Token Generation
 const generateToken = (id) => {
   return userService.generateToken(id);
+};
+
+export const getAllUsers = async (response, request) => {
+  try {
+    const query = {};
+    const users = await userService.getAllUsers(query);
+    setResponse(users, response);
+  } catch (error) {
+    errorHandler(error.message, response);
+  }
 };

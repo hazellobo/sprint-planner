@@ -5,7 +5,7 @@ const SprintSchema = new Mongoose.Schema(
   {
     sprintName: {
       type: String,
-      required: "Email Id is required",
+      required: "sprint name is required",
     },
     status: {
       type: [
@@ -17,7 +17,7 @@ const SprintSchema = new Mongoose.Schema(
     },
     sprintDuration: {
       type: String,
-      default: "1 Week",
+      // default: "1 Week",
     },
     startDate: {
       type: Date,

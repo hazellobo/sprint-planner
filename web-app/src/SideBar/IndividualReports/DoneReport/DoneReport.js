@@ -16,7 +16,6 @@ class DoneReport extends React.Component {
         autosize: false,
         height: 530,
         width: 370,
-        title: "Done",
       },
     };
   }

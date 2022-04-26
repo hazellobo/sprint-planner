@@ -3,7 +3,7 @@
 import app from "./api/app.js";
 
 // set the port where the server should run
-const port = 9001;
+const port = 9000;
 
 app.listen(port, () => {
   console.log(`server running at ${port}`);

@@ -96,7 +96,11 @@ const generateToken = (id) => {
 };
 
 export const getAllUsers = async (response, request) => {
-  const users = await userService.getAllUsers();
-  // res.status(200);
-  response.json(users);
+  try {
+    const query = {};
+    const users = await userService.getAllUsers(query);
+    setResponse(users, response);
+  } catch (error) {
+    errorHandler(error.message, response);
+  }
 };

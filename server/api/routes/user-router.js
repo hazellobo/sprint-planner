@@ -14,6 +14,6 @@ router
   .post("/register", registerUser)
   .post("/login", loginUser)
   .get("/getMe", protect, getMe)
-  .get("/getAll", getAllUsers);
+  .get("/All", getAllUsers);
 
 export default router;

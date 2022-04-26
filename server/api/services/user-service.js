@@ -40,6 +40,7 @@ export const generateToken = (id) => {
   });
 };
 
-export const getAllUsers = () => {
-  return User.find({}).exec();
+export const getAllUsers = (query) => {
+  const params = { ...query };
+  return User.find(params).exec();
 };

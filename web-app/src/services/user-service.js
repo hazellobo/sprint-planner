@@ -19,6 +19,16 @@ function loggedInUser(user) {
   });
 }
 
-const userApis = { loggedInUser, getAllUsers };
+function getLoggedInUser(token) {
+  return fetch(`${API_URL}getMe`, {
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify("Bearer " + token),
+  });
+}
+
+const userApis = { loggedInUser, getAllUsers, getLoggedInUser };
 
 export default userApis;

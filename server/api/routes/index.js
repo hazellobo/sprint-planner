@@ -6,6 +6,6 @@ import projectRouters from "./project-router.js";
 export default (app) => {
   app.use("/", ticketRouters);
   app.use("/", sprintRouters);
-  app.use("/users", userRoute);
+  app.use("/", userRoute);
   app.use("/", projectRouters);
 };

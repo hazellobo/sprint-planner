@@ -95,12 +95,22 @@ const generateToken = (id) => {
   return userService.generateToken(id);
 };
 
-export const getAllUsers = async (response, request) => {
+// search for users
+export const index = async (request, response) => {
+  // try the querying with
   try {
+    //   since the id is added as a query to the url - use request.query
+    const id = request.query.id;
     const query = {};
-    const users = await userService.getAllUsers(query);
-    setResponse(users, response);
+    // add to query only when title is added to the url as query param
+    if (id) {
+      query.id = id;
+    }
+    const user = await userService.search(query);
+    // set the success response
+    setResponse(user, response);
   } catch (error) {
-    errorHandler(error.message, response);
+    // set the error response
+    errorHandler(error, response);
   }
 };

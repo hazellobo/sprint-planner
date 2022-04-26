@@ -3,7 +3,7 @@ import {
   registerUser,
   loginUser,
   getMe,
-  getAllUsers,
+  index,
 } from "../controllers/user-controller.js";
 import { protect } from "../controllers/authCheck.js";
 
@@ -11,9 +11,9 @@ const router = express.Router();
 
 //user registration
 router
-  .post("/register", registerUser)
-  .post("/login", loginUser)
-  .get("/getMe", protect, getMe)
-  .get("/All", getAllUsers);
+  .post("/users/register", registerUser)
+  .post("/users/login", loginUser)
+  .get("/users/getMe", protect, getMe)
+  .get("/users", index);
 
 export default router;

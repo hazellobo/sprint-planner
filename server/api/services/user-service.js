@@ -40,7 +40,9 @@ export const generateToken = (id) => {
   });
 };
 
-export const getAllUsers = (query) => {
+// search for a user item by query
+export const search = (query) => {
   const params = { ...query };
+  // will be an array of promise
   return User.find(params).exec();
 };

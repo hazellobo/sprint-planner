@@ -10,6 +10,8 @@ import Button from "react-bootstrap/Button";
 import * as AiIcons from "react-icons/ai";
 import * as VscIcons from "react-icons/vsc";
 import CreateTicket from "./../../NavBar/CreateTicket/CreateTicket";
+import sprintApis from "../../services/sprint-service";
+import moment from "moment";
 
 class TaskList extends React.Component {
   constructor(props) {
@@ -22,17 +24,19 @@ class TaskList extends React.Component {
         sortable: true,
         filter: true,
         resizable: true,
-        // editable: true,
-        isOpen: false,
-        isEditMode: false,
-        issueName: "",
-        issueType: [],
-        issueDescription: "",
-        reporter: "",
-        assignee: "",
-        priority: [],
-        taskId: "",
       },
+      isOpen: false,
+      isEditMode: false,
+      issueName: "",
+      issueType: [],
+      issueDescription: "",
+      reporter: "",
+      assignee: "",
+      priority: [],
+      taskId: "",
+      isSprintActive: false,
+      selectedSprint: [],
+      sprints: [],
       columnDefs: [
         { field: "name" },
         { field: "description" },
@@ -71,12 +75,23 @@ class TaskList extends React.Component {
     };
   }
   openModal = () => this.setState({ isOpen: true });
+  closeModal = () => this.setState({ isOpen: false });
   componentDidMount() {
     ticketApis
       .getAllTickets()
       .then((result) => result.json())
       .then((rowData) => this.setState({ rowData }));
+    sprintApis
+      .getAllSprints()
+      .then((result) => result.json())
+      .then((sprints) => this.setState({ sprints }));
   }
+
+  // componentDidUpdate() {
+  //   if (this.state.sprints.length > 0) {
+  //     this.setState({ selectedSprint: this.state.sprints[0] });
+  //   }
+  // }
 
   onGridReady = (params) => {
     this.gridApi = params.api;
@@ -99,20 +114,104 @@ class TaskList extends React.Component {
     });
   };
 
-  handleSprint() {}
+  handleCreateTicket() {
+    this.setState({
+      isOpen: true,
+      isEditMode: false,
+      issueName: "",
+      issueDescription: "",
+      priority: "",
+      assignee: "",
+      reporter: "",
+      issueType: "",
+      taskId: "",
+    });
+  }
+
+  getUniqueListBy(arr) {
+    return [...new Map(arr.map((item) => [item["id"], item])).values()];
+  }
+
+  handleCallback = (childData) => {
+    if (this.state.isEditMode) {
+      let updatedRowData = [...this.state.rowData, childData];
+      let uniqueRowData = this.getUniqueListBy(updatedRowData);
+      this.setState({ rowData: uniqueRowData });
+    } else {
+      this.setState({ rowData: [...this.state.rowData, childData] });
+    }
+    this.closeModal();
+  };
+
+  setSelectedSprint(event) {
+    // this.setState({ selectedSprint: event.target.value });
+  }
+
+  handleSprint() {
+    // TODO change this !!!!!
+    this.setState({ selectedSprint: this.state.sprints[0] }, () => {
+      const payload = {
+        name: this.state.selectedSprint.sprintName,
+        duration: this.state.selectedSprint.sprintDuration,
+        status: this.state.selectedSprint.status,
+        startDate: moment(),
+        endDate: moment().add(
+          parseInt(this.state.selectedSprint.sprintDuration, 10),
+          "week"
+        ),
+      };
+      sprintApis
+        .updateSprint(this.state.selectedSprint.id, payload)
+        .then((result) => result.json());
+    });
+  }
 
   render() {
+    let options;
+    let sprintLength = this.state.sprints.length;
+    let isSelectedSprintActive = this.state.selectedSprint.status;
+    let activeStatus;
+    let createButton;
+    if (sprintLength === 0) {
+      options = <option>No sprints to select</option>;
+    } else {
+      options = this.state.sprints.map((sprint) => {
+        return <option value={sprint.sprintName}> {sprint.sprintName} </option>;
+      });
+      if (isSelectedSprintActive) {
+        activeStatus = (
+          <span>
+            Start date :{" "}
+            {moment(this.state.selectedSprint.startDate).format("MMM Do YYYY")}{" "}
+            - End date :{" "}
+            {moment(this.state.selectedSprint.endDate).format("MMM Do YYYY")}
+          </span>
+        );
+      } else {
+        activeStatus = (
+          <Button variant="primary" onClick={this.handleSprint.bind(this)}>
+            Start Sprint
+          </Button>
+        );
+      }
+      createButton = (
+        <Button variant="primary" onClick={this.handleCreateTicket.bind(this)}>
+          Create Ticket
+        </Button>
+      );
+    }
     return (
       <div className="tasklist">
         <div className="edit-ticket-btn">
-          <select name="sprints" id="sprints">
-            <option value="volvo">Sprint1</option>
-            <option value="saab">Backlog</option>
-            <option value="opel">Future sprint</option>
+          <select
+            name="sprints"
+            id="sprints"
+            value={this.state.selectedSprint}
+            onChange={this.setSelectedSprint.bind(this)}
+          >
+            {options}
           </select>
-          <Button variant="primary" onClick={this.handleSprint}>
-            Start Sprint
-          </Button>
+          {activeStatus}
         </div>
 
         <div className="ag-theme-alpine ag-grid-tasklist">
@@ -128,12 +227,9 @@ class TaskList extends React.Component {
             rowSelection={"single"}
           ></AgGridReact>
         </div>
-        <div className="create-ticket-btn">
-          <Button variant="primary" onClick={this.openModal}>
-            Create Ticket
-          </Button>
-        </div>
+        <div className="create-ticket-btn">{createButton}</div>
         <CreateTicket
+          parentCallback={this.handleCallback.bind(this)}
           isOpen={this.state.isOpen}
           isEditMode={this.state.isEditMode}
           issueName={this.state.issueName}

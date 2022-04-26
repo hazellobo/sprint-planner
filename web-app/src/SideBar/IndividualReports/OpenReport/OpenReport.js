@@ -16,7 +16,6 @@ class OpenReport extends React.Component {
         autosize: false,
         height: 530,
         width: 370,
-        title: "Open",
       },
     };
   }

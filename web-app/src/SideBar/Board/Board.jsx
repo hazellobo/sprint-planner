@@ -124,7 +124,7 @@ class BoardComponent extends React.Component {
       checkedHighPriIssue = <AiIcons.AiOutlineCheck />;
     }
     this.state.filteredTickets.forEach((element) => {
-      if (element.status[0] === "Closed") {
+      if (element.status[0] === "Done") {
         ticketDone.push(element);
       }
     });
@@ -266,7 +266,7 @@ class BoardComponent extends React.Component {
       options = <option>No sprints to select</option>;
     } else {
       options = this.state.sprints.map((sprint) => {
-        return <option value={sprint.name}> {sprint.name} </option>;
+        return <option value={sprint.sprintName}> {sprint.sprintName} </option>;
       });
     }
     return (

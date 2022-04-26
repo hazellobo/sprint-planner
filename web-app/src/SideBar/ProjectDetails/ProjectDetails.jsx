@@ -117,13 +117,6 @@ class Project extends React.Component {
           <button type="submit" className="btn btn-primary" onClick={this.addTask}>
             Create Project
           </button>
-          <button
-            type="button"
-            className="btn btn-warning"
-            data-bs-dismiss="modal"
-          >
-            Close
-          </button>
         </div>
       </div>
       

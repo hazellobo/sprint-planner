@@ -3,9 +3,8 @@ import Form from "react-bootstrap/Form";
 import "bootstrap/dist/js/bootstrap.min.js";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import sprintApis from "../../services/sprint-service.js"
+import sprintApis from "../../services/sprint-service.js";
 require("react-bootstrap/ModalHeader");
-
 
 class Sprint extends React.Component {
   constructor(props) {
@@ -15,14 +14,14 @@ class Sprint extends React.Component {
       sprintName: "",
       sprintDuration: "",
       sprintGoal: "",
-      ismatches : false
+      ismatches: false,
 
       // TicketSprint: "",
     };
     this.handleTextInputChange = this.handleTextInputChange.bind(this);
     this.handleTextAreaInputChange = this.handleTextAreaInputChange.bind(this);
   }
-  
+
   componentWillReceiveProps(nextProps) {
     this.setState({ isSprintOpen: nextProps.isSprintOpen });
   }
@@ -30,19 +29,26 @@ class Sprint extends React.Component {
   // openModal = () => this.setState({ isOpen: true });
   closeModal = () => this.setState({ isSprintOpen: false });
 
-  createSprint= async () => {
-    const {isSprintOpen, sprintName, sprintDuration, sprintGoal} = this.state
-    const status= "Inactive"
-    const startDate=""
-    const endDate=""
-    const payload = { sprintName, sprintDuration, status, startDate, endDate}
-    await sprintApis.createSprint(payload).then(res => {
-        this.setState({
-            sprintName: "",
-            sprintDuration: "",
-            sprintGoal: "",
-        })
-    })
+  createSprint() {
+    // const { sprintName, sprintDuration } = this.state;
+    const status = ["Inactive"];
+    const startDate = "";
+    const endDate = "";
+    const payload = {
+      sprintName: this.name.value,
+      sprintDuration: this.type.value,
+      status,
+      startDate,
+      endDate,
+    };
+    sprintApis.createSprint(payload).then((res) => res.json());
+    // {
+    // this.setState({
+    //     sprintName: "",
+    //     sprintDuration: "",
+    //     sprintGoal: "",
+    // })
+    // });
     console.log(payload);
     this.closeModal();
   }
@@ -58,33 +64,32 @@ class Sprint extends React.Component {
   // }
 
   handleIssueType = (e) => {
-    this.state.sprintDuration = e.target.value;
+    this.setState({ sprintDuration: e.target.value });
   };
 
   handleTextAreaInputChange(event) {
     this.setState({
-        sprintGoal: event.target.value,
+      sprintGoal: event.target.value,
     });
   }
-  handleTextInputChange(event){
-    sprintApis.getAllSprints().then(res => {
-         res.json().then(a=> a.forEach(element => {
-             if(element.sprintName.includes(event.target.value)){
-                this.setState({
-                    ismatches: true
-                });
-             }
-             else {
-                this.setState({
-                    sprintName: event.target.value,
-                    ismatches: false
-                });
-             }
-         }));
+  handleTextInputChange(event) {
+    sprintApis.getAllSprints().then((res) => {
+      res.json().then((a) =>
+        a.forEach((element) => {
+          if (element.sprintName.includes(event.target.value)) {
+            this.setState({
+              ismatches: true,
+            });
+          } else {
+            this.setState({
+              sprintName: this.name,
+              ismatches: false,
+            });
+          }
         })
-
+      );
+    });
   }
-
 
   render() {
     return (
@@ -118,13 +123,13 @@ class Sprint extends React.Component {
                 onChange={this.handleIssueType.bind(this)}
                 ref={(c) => (this.type = c)}
               >
-                <option value="1 Week">1 Week</option>
-                <option value="2 Weeks">2 Weeks</option>
-                <option value="3 Weeks">3 Weeks</option>
+                <option value="1">1 Week</option>
+                <option value="2">2 Weeks</option>
+                <option value="3">3 Weeks</option>
+                <option value="4">4 Weeks</option>
               </select>
             </div>
           </form>
-          {/* </div> */}
         </Modal.Body>
         <Modal.Footer>
           <button

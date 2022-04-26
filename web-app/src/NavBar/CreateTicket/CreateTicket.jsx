@@ -63,6 +63,7 @@ class Project extends React.Component {
     // when a new ticket is added to a sprint - also update in the sprint api
     ticketApis.createTicket(payload).then((result) => result.json());
     this.closeModal();
+    this.props.parentCallback(payload);
   }
 
   updateTask() {
@@ -77,7 +78,9 @@ class Project extends React.Component {
     };
     ticketApis
       .updateTicket(this.state.taskId, payload)
-      .then((result) => result.json());
+      .then((result) =>
+        result.json().then((res) => this.props.parentCallback(res))
+      );
     this.closeModal();
   }
   componentDidMount() {
@@ -142,7 +145,7 @@ class Project extends React.Component {
       sprintAvailableOptions = <option>No sprints to select</option>;
     } else {
       sprintAvailableOptions = this.state.allAvailableSprint.map((sprint) => {
-        return <option value={sprint.name}> {sprint.name} </option>;
+        return <option value={sprint.sprintName}> {sprint.sprintName} </option>;
       });
     }
     if (this.state.isEditMode) {

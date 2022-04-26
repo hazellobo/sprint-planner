@@ -24,7 +24,7 @@ function LoginForm() {
       e.preventDefault();
       const obj = { emailId, password };
     
-      await fetch(`http://localhost:9001/api/users/login`, {
+      await fetch(`http://localhost:9000/api/users/login`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",

@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:9000/tickets";
+const API_URL = "http://localhost:9001/tickets";
 
 function getAllTickets() {
   return fetch(API_URL, {

@@ -1,12 +1,14 @@
 import "./App.scss";
+import React from "react";
 import LoginForm from "./components/LoginForm";
 
-function App() {
-  return (
-    <>
-      <LoginForm />
-    </>
-  );
+class App extends React.Component {
+  render() {
+    return (
+      <>
+        <LoginForm />
+      </>
+    );
+  }
 }
-
 export default App;

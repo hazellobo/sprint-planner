@@ -1,7 +1,7 @@
-import tickets from "./ticket";
+import sprint from "./sprint";
 
 const state = {
-  tickets,
+  sprint,
 };
 
 export default state;

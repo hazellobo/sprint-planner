@@ -6,6 +6,7 @@ import Button from "react-bootstrap/Button";
 import sprintApis from "../../services/sprint-service.js"
 require("react-bootstrap/ModalHeader");
 
+
 class Sprint extends React.Component {
   constructor(props) {
     super(props);
@@ -14,13 +15,14 @@ class Sprint extends React.Component {
       sprintName: "",
       sprintDuration: "",
       sprintGoal: "",
+      ismatches : false
 
       // TicketSprint: "",
     };
     this.handleTextInputChange = this.handleTextInputChange.bind(this);
     this.handleTextAreaInputChange = this.handleTextAreaInputChange.bind(this);
   }
-
+  
   componentWillReceiveProps(nextProps) {
     this.setState({ isSprintOpen: nextProps.isSprintOpen });
   }
@@ -64,11 +66,23 @@ class Sprint extends React.Component {
         sprintGoal: event.target.value,
     });
   }
+  handleTextInputChange(event){
+    sprintApis.getAllSprints().then(res => {
+         res.json().then(a=> a.forEach(element => {
+             if(element.sprintName.includes(event.target.value)){
+                this.setState({
+                    ismatches: true
+                });
+             }
+             else {
+                this.setState({
+                    sprintName: event.target.value,
+                    ismatches: false
+                });
+             }
+         }));
+        })
 
-  handleTextInputChange(event) {
-    this.setState({
-        sprintName: event.target.value,
-    });
   }
 
 
@@ -117,6 +131,7 @@ class Sprint extends React.Component {
             type="submit"
             className="btn btn-primary"
             onClick={this.createSprint.bind(this)}
+            disabled={this.state.ismatches}
           >
             Create Sprint
           </button>

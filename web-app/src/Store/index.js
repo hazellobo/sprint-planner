@@ -1,8 +1,8 @@
 import { createStore } from "redux";
 
-import reducer from "./Reducers/tickets-reducer";
+import rootReducer from "./Reducers/sprint-reducer";
 
 // creates a new store with the reducer
-const store = createStore(reducer);
+const store = createStore(rootReducer);
 
 export default store;

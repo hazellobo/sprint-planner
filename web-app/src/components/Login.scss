@@ -30,7 +30,7 @@ input,button {
 .loginForm:after {
   content : '';
   display : block;
-  position:absolute;
+  position:relative;
   top: -5px;
   left: -5px;
   right: -5px; 
@@ -42,9 +42,10 @@ input,button {
 .loginForm .form-inner{
   position: relative;
   display: block;
-  background-color: #FFF;
-  padding: 30px;
+  background-color: #ffffff;
+  padding: 500px;
   z-index: 2;
+  top: -300px;
 }
 
 .loginForm .form-inner h2{

@@ -10,7 +10,7 @@ import NavBarC from "../NavBar/NavBar";
 function Dashboard() {
  
   return (
-        <div>
+        <div className="main">
           <NavBarC></NavBarC>
           <div className="sidebar-routes">
             <Router>

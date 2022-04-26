@@ -7,11 +7,29 @@ import "./Board.scss";
 import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
 import * as AiIcons from "react-icons/ai";
+import * as BiIcons from "react-icons/bi";
+import * as BsIcons from "react-icons/bs";
+import * as VscIcons from "react-icons/vsc";
+import * as MdIcons from "react-icons/md";
 import { connect } from "react-redux";
+import ReactCardFlip from "react-card-flip";
+import DoneReport from "../IndividualReports/DoneReport/DoneReport";
+import InProgressReport from "../IndividualReports/InProgressReport/InProgressReport";
+import OpenReport from "../IndividualReports/OpenReport/OpenReport";
 
-// function mapStateToProps(state) {
-//   const tickets = state.tickets;
-//   return {tickets}
+function mapStateToProps(state) {
+  const sprint = state.sprint;
+  // const text = state.text;
+  return {
+    sprint,
+    // text
+  };
+}
+
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     setSprint: (sprint) => dispatch(setSprint(sprint)),
+//   };
 // };
 class BoardComponent extends React.Component {
   constructor(props) {
@@ -20,6 +38,9 @@ class BoardComponent extends React.Component {
       sprints: [],
       tickets: [],
       filteredTickets: [],
+      isOpenFlip: false,
+      isInProgressFlip: false,
+      isDoneFlip: false,
     };
   }
   isOnlyMyIssuesChecked = false;
@@ -52,6 +73,25 @@ class BoardComponent extends React.Component {
     } else {
       this.setState({ filteredTickets: this.state.tickets });
     }
+  }
+
+  handleClick(e) {
+    e.preventDefault();
+    this.setState((prevState) => ({
+      isInProgressFlip: !prevState.isInProgressFlip,
+    }));
+  }
+  handleOpenTicClick(e) {
+    e.preventDefault();
+    this.setState((prevState) => ({
+      isOpenFlip: !prevState.isOpenFlip,
+    }));
+  }
+  handleDoneTicClick(e) {
+    e.preventDefault();
+    this.setState((prevState) => ({
+      isDoneFlip: !prevState.isDoneFlip,
+    }));
   }
 
   componentDidMount() {
@@ -102,7 +142,23 @@ class BoardComponent extends React.Component {
     if (ticketDone.length === 0) {
       <span>No ticket in done state</span>;
     } else {
+      let type;
+      let priority;
       ticketDoneOptions = ticketDone.map((ticket) => {
+        if (ticket.ticketType[0] === "Bug") {
+          type = <AiIcons.AiOutlineBug />;
+        } else if (ticket.ticketType[0] === "Task") {
+          type = <BiIcons.BiTask />;
+        } else {
+          type = <BsIcons.BsFillBookmarkFill />;
+        }
+        if (ticket.priority[0] === "High") {
+          priority = <AiIcons.AiOutlineArrowUp />;
+        } else if (ticket.priority[0] === "Medium") {
+          priority = <VscIcons.VscThreeBars />;
+        } else {
+          priority = <AiIcons.AiOutlineArrowDown />;
+        }
         return (
           <ListGroup.Item>
             <Card>
@@ -113,7 +169,7 @@ class BoardComponent extends React.Component {
                 </Card.Subtitle>
                 <div className="card-text-div">
                   <Card.Text>
-                    {ticket.status[0]} {ticket.priority[0]}
+                    {priority} {type}
                   </Card.Text>
                   <Card.Text>{ticket.assignedTo}</Card.Text>
                 </div>
@@ -127,7 +183,23 @@ class BoardComponent extends React.Component {
     if (ticketInProgress.length === 0) {
       <span>No ticket in done state</span>;
     } else {
+      let type;
+      let priority;
       ticketInProgressOptions = ticketInProgress.map((ticket) => {
+        if (ticket.ticketType[0] === "Bug") {
+          type = <AiIcons.AiOutlineBug />;
+        } else if (ticket.ticketType[0] === "Task") {
+          type = <BiIcons.BiTask />;
+        } else {
+          type = <BsIcons.BsFillBookmarkFill />;
+        }
+        if (ticket.priority[0] === "High") {
+          priority = <AiIcons.AiOutlineArrowUp />;
+        } else if (ticket.priority[0] === "Medium") {
+          priority = <VscIcons.VscThreeBars />;
+        } else {
+          priority = <AiIcons.AiOutlineArrowDown />;
+        }
         return (
           <ListGroup.Item>
             <Card>
@@ -138,7 +210,7 @@ class BoardComponent extends React.Component {
                 </Card.Subtitle>
                 <div className="card-text-div">
                   <Card.Text>
-                    {ticket.status[0]} {ticket.priority[0]}
+                    {priority} {type}
                   </Card.Text>
                   <Card.Text>{ticket.assignedTo}</Card.Text>
                 </div>
@@ -152,7 +224,23 @@ class BoardComponent extends React.Component {
     if (ticketOpen.length === 0) {
       <span>No ticket in done state</span>;
     } else {
+      let type;
+      let priority;
       ticketOpenOptions = ticketOpen.map((ticket) => {
+        if (ticket.ticketType[0] === "Bug") {
+          type = <AiIcons.AiOutlineBug />;
+        } else if (ticket.ticketType[0] === "Task") {
+          type = <BiIcons.BiTask />;
+        } else {
+          type = <BsIcons.BsFillBookmarkFill />;
+        }
+        if (ticket.priority[0] === "High") {
+          priority = <AiIcons.AiOutlineArrowUp />;
+        } else if (ticket.priority[0] === "Medium") {
+          priority = <VscIcons.VscThreeBars />;
+        } else {
+          priority = <AiIcons.AiOutlineArrowDown />;
+        }
         return (
           <ListGroup.Item>
             <Card>
@@ -163,7 +251,7 @@ class BoardComponent extends React.Component {
                 </Card.Subtitle>
                 <div className="card-text-div">
                   <Card.Text>
-                    {ticket.status[0]} {ticket.priority[0]}
+                    {priority} {type}
                   </Card.Text>
                   <Card.Text>{ticket.assignedTo}</Card.Text>
                 </div>
@@ -212,24 +300,93 @@ class BoardComponent extends React.Component {
             <Card.Body>
               <Card.Title>Open</Card.Title>
             </Card.Body>
-            <ListGroup variant="flush">{ticketOpenOptions}</ListGroup>
+            <ReactCardFlip
+              isFlipped={this.state.isOpenFlip}
+              flipDirection="horizontal"
+            >
+              <div>
+                <ListGroup variant="flush">{ticketOpenOptions}</ListGroup>
+                <Button
+                  variant="light"
+                  onClick={this.handleOpenTicClick.bind(this)}
+                >
+                  <MdIcons.MdOutlineFlipCameraAndroid />
+                </Button>
+              </div>
+              <div>
+                <OpenReport
+                  totalTickets={this.state.filteredTickets.length}
+                  openTicket={ticketOpen.length}
+                />
+                <Button
+                  variant="light"
+                  onClick={this.handleOpenTicClick.bind(this)}
+                >
+                  <MdIcons.MdOutlineFlipCameraAndroid />
+                </Button>
+              </div>
+            </ReactCardFlip>
           </Card>
           <Card>
             <Card.Body>
               <Card.Title>In progress</Card.Title>
             </Card.Body>
-            <ListGroup variant="flush">{ticketInProgressOptions}</ListGroup>
+            <ReactCardFlip
+              isFlipped={this.state.isInProgressFlip}
+              flipDirection="horizontal"
+            >
+              <div>
+                <ListGroup variant="flush">{ticketInProgressOptions}</ListGroup>
+                <Button variant="light" onClick={this.handleClick.bind(this)}>
+                  <MdIcons.MdOutlineFlipCameraAndroid />
+                </Button>
+              </div>
+              <div>
+                <InProgressReport
+                  totalTickets={this.state.filteredTickets.length}
+                  inProgressTicket={ticketInProgress.length}
+                />
+                <Button variant="light" onClick={this.handleClick.bind(this)}>
+                  <MdIcons.MdOutlineFlipCameraAndroid />
+                </Button>
+              </div>
+            </ReactCardFlip>
           </Card>
           <Card>
             <Card.Body>
               <Card.Title>Done</Card.Title>
             </Card.Body>
-            <ListGroup variant="flush">{ticketDoneOptions}</ListGroup>
+            <ReactCardFlip
+              isFlipped={this.state.isDoneFlip}
+              flipDirection="horizontal"
+            >
+              <div>
+                <ListGroup variant="flush">{ticketDoneOptions}</ListGroup>
+                <Button
+                  variant="light"
+                  onClick={this.handleDoneTicClick.bind(this)}
+                >
+                  <MdIcons.MdOutlineFlipCameraAndroid />
+                </Button>
+              </div>
+              <div>
+                <DoneReport
+                  totalTickets={this.state.filteredTickets.length}
+                  doneTicket={ticketDone.length}
+                />
+                <Button
+                  variant="light"
+                  onClick={this.handleDoneTicClick.bind(this)}
+                >
+                  <MdIcons.MdOutlineFlipCameraAndroid />
+                </Button>
+              </div>
+            </ReactCardFlip>
           </Card>
         </div>
       </div>
     );
   }
 }
-// const Board = connect(mapStateToProps())(BoardComponent);
+// const Board = connect(mapStateToProps, mapDispatchToProps)(BoardComponent);
 export default BoardComponent;

@@ -8,6 +8,13 @@ function LoginForm() {
   const [password, setPassword] = useState("");
   const [token, setToken] = useState();
   const [error, setError] = useState("");
+  const [user, setUser] = useState({
+    name: "",
+    emailId: "",
+    password: "",
+    role: "",
+    projectId: []
+  });
 
   //checks if user is logged in on everytime page loads
   useEffect(() => {
@@ -18,6 +25,7 @@ function LoginForm() {
     }
   }, []);
 
+ 
 
   //on submit button
   const submitHandler = async (e) => {
@@ -34,8 +42,10 @@ function LoginForm() {
         .then((response) =>
           response.json()).then((result) => {
             if (!result.hasOwnProperty("error")) {
-               setToken(result.token);
-               localStorage.setItem('userToken', result.token);
+              setToken(result.token);
+              setUser(result.user);
+              localStorage.setItem('userToken', result.token);
+              localStorage.setItem('user', JSON.stringify(result.user));   
             } else {
               setError(result.error);
             }
@@ -45,8 +55,8 @@ function LoginForm() {
 
   //if user exists only then allow to view dashboard
   if (token) {
-    console.log("User token",token)
-    return <Dashboard></Dashboard>
+    console.log("User token", token)
+    return <Dashboard user={user}></Dashboard>
   }
 
   return (

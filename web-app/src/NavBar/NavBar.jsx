@@ -15,6 +15,7 @@ class NavBarC extends React.Component {
     this.state = {
       isOpen: false,
       isSprintOpen: false,
+      userCred: this.props.userCred,
     };
   }
   // state = {};
@@ -27,10 +28,10 @@ class NavBarC extends React.Component {
   closeModal = () => this.setState({ isOpen: false });
 
   logout = (e) => {
-    e.preventDefault();
     localStorage.clear();
-    return <LoginForm />
-  }
+    window.location.reload(false);
+    return <LoginForm />;
+  };
 
   openSprintModal = () => this.setState({ isSprintOpen: true });
   closeSprintModal = () => this.setState({ isSprintOpen: false });
@@ -61,7 +62,7 @@ class NavBarC extends React.Component {
                   align={"end"}
                 >
                   <NavDropdown.Item>
-                        {/* Howdy,username */}
+                    Howdy,{this.state.userCred.name}
                   </NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item href="#" onClick={this.logout}>

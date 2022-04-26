@@ -10,7 +10,7 @@ const SECRET_KEY = "123";
  * @param {*} role
  * @returns
  */
-export const createUser = (name,emailId, password, role) => {
+export const createUser = (name, emailId, password, role) => {
   const user = User.create({
     name,
     emailId,
@@ -38,4 +38,8 @@ export const generateToken = (id) => {
   return jwt.sign({ id }, SECRET_KEY, {
     expiresIn: "30d",
   });
+};
+
+export const getAllUsers = () => {
+  return User.find({}).exec();
 };

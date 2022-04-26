@@ -37,6 +37,7 @@ class TaskList extends React.Component {
       isSprintActive: false,
       selectedSprint: [],
       sprints: [],
+      allTickets: [],
       columnDefs: [
         { field: "name" },
         { field: "description" },
@@ -76,22 +77,26 @@ class TaskList extends React.Component {
   }
   openModal = () => this.setState({ isOpen: true });
   closeModal = () => this.setState({ isOpen: false });
+
   componentDidMount() {
-    ticketApis
-      .getAllTickets()
-      .then((result) => result.json())
-      .then((rowData) => this.setState({ rowData }));
     sprintApis
       .getAllSprints()
       .then((result) => result.json())
       .then((sprints) => this.setState({ sprints }));
+    ticketApis
+      .getAllTickets()
+      .then((result) => result.json())
+      .then((res) => {
+        this.setState({ allTickets: res });
+        let filteredSprintTickets = [];
+        res.forEach((element) => {
+          if (element.sprint[0] === this.state.selectedSprint.sprintName) {
+            filteredSprintTickets.push(element);
+          }
+        });
+        this.setState({ rowData: filteredSprintTickets });
+      });
   }
-
-  // componentDidUpdate() {
-  //   if (this.state.sprints.length > 0) {
-  //     this.setState({ selectedSprint: this.state.sprints[0] });
-  //   }
-  // }
 
   onGridReady = (params) => {
     this.gridApi = params.api;
@@ -144,26 +149,34 @@ class TaskList extends React.Component {
   };
 
   setSelectedSprint(event) {
-    // this.setState({ selectedSprint: event.target.value });
+    let filteredSprintTickets = [];
+    this.state.sprints.forEach((element) => {
+      if (element.sprintName === event.target.value) {
+        this.setState({ selectedSprint: element });
+      }
+    });
+    this.state.allTickets.forEach((element) => {
+      if (element.sprint[0] === event.target.value) {
+        filteredSprintTickets.push(element);
+      }
+    });
+    this.setState({ rowData: filteredSprintTickets });
   }
 
   handleSprint() {
-    // TODO change this !!!!!
-    this.setState({ selectedSprint: this.state.sprints[0] }, () => {
-      const payload = {
-        name: this.state.selectedSprint.sprintName,
-        duration: this.state.selectedSprint.sprintDuration,
-        status: this.state.selectedSprint.status,
-        startDate: moment(),
-        endDate: moment().add(
-          parseInt(this.state.selectedSprint.sprintDuration, 10),
-          "week"
-        ),
-      };
-      sprintApis
-        .updateSprint(this.state.selectedSprint.id, payload)
-        .then((result) => result.json());
-    });
+    const payload = {
+      name: this.state.selectedSprint.sprintName,
+      duration: this.state.selectedSprint.sprintDuration,
+      status: this.state.selectedSprint.status,
+      startDate: moment(),
+      endDate: moment().add(
+        parseInt(this.state.selectedSprint.sprintDuration, 10),
+        "week"
+      ),
+    };
+    sprintApis
+      .updateSprint(this.state.selectedSprint.id, payload)
+      .then((result) => result.json());
   }
 
   render() {
@@ -178,25 +191,25 @@ class TaskList extends React.Component {
       options = this.state.sprints.map((sprint) => {
         return <option value={sprint.sprintName}> {sprint.sprintName} </option>;
       });
-      if (isSelectedSprintActive) {
-        activeStatus = (
-          <span>
-            Start date :{" "}
-            {moment(this.state.selectedSprint.startDate).format("MMM Do YYYY")}{" "}
-            - End date :{" "}
-            {moment(this.state.selectedSprint.endDate).format("MMM Do YYYY")}
-          </span>
-        );
-      } else {
-        activeStatus = (
-          <Button variant="primary" onClick={this.handleSprint.bind(this)}>
-            Start Sprint
-          </Button>
-        );
-      }
       createButton = (
         <Button variant="primary" onClick={this.handleCreateTicket.bind(this)}>
           Create Ticket
+        </Button>
+      );
+    }
+    if (isSelectedSprintActive === "Active") {
+      activeStatus = (
+        <span>
+          Start date :{" "}
+          {moment(this.state.selectedSprint.startDate).format("MMM Do YYYY")} -
+          End date :{" "}
+          {moment(this.state.selectedSprint.endDate).format("MMM Do YYYY")}
+        </span>
+      );
+    } else {
+      activeStatus = (
+        <Button variant="primary" onClick={this.handleSprint.bind(this)}>
+          Start Sprint
         </Button>
       );
     }
@@ -206,8 +219,9 @@ class TaskList extends React.Component {
           <select
             name="sprints"
             id="sprints"
-            value={this.state.selectedSprint}
+            value={this.state.selectedSprint.sprintName}
             onChange={this.setSelectedSprint.bind(this)}
+            ref={(c) => (this.selectedSprintName = c)}
           >
             {options}
           </select>

@@ -38,6 +38,7 @@ class BoardComponent extends React.Component {
       sprints: [],
       tickets: [],
       filteredTickets: [],
+      filteredSprintTickets: [],
       isOpenFlip: false,
       isInProgressFlip: false,
       isDoneFlip: false,
@@ -46,47 +47,53 @@ class BoardComponent extends React.Component {
   isOnlyMyIssuesChecked = false;
   isHighPriorityIssueChecked = false;
 
+  // handle the assigned to me issue btn
   handleAssignedTo() {
     let filtered = [];
     this.isOnlyMyIssuesChecked = !this.isOnlyMyIssuesChecked;
     this.isHighPriorityIssueChecked = false;
     if (this.isOnlyMyIssuesChecked) {
-      // change it to the logged in user
-      this.state.tickets
+      // TODO change it to the logged in user
+      this.state.filteredSprintTickets
         .filter((ticket) => ticket.assignedTo.includes("Aravind"))
         .map((ticket) => filtered.push(ticket));
       this.setState({ filteredTickets: filtered });
     } else {
-      this.setState({ filteredTickets: this.state.tickets });
+      this.setState({ filteredTickets: this.state.filteredSprintTickets });
     }
   }
 
+  // handle the high priority btn
   handleHighPriorityIssue() {
     let filtered = [];
     this.isHighPriorityIssueChecked = !this.isHighPriorityIssueChecked;
     this.isOnlyMyIssuesChecked = false;
     if (this.isHighPriorityIssueChecked) {
-      this.state.tickets
+      this.state.filteredSprintTickets
         .filter((ticket) => ticket.priority[0].includes("High"))
         .map((ticket) => filtered.push(ticket));
       this.setState({ filteredTickets: filtered });
     } else {
-      this.setState({ filteredTickets: this.state.tickets });
+      this.setState({ filteredTickets: this.state.filteredSprintTickets });
     }
   }
 
+  // handle card flip click for tickets in progress
   handleClick(e) {
     e.preventDefault();
     this.setState((prevState) => ({
       isInProgressFlip: !prevState.isInProgressFlip,
     }));
   }
+
+  // handle card flip click for all open tickets
   handleOpenTicClick(e) {
     e.preventDefault();
     this.setState((prevState) => ({
       isOpenFlip: !prevState.isOpenFlip,
     }));
   }
+  // handle card flip click for all open tickets
   handleDoneTicClick(e) {
     e.preventDefault();
     this.setState((prevState) => ({
@@ -102,9 +109,22 @@ class BoardComponent extends React.Component {
     ticketApis
       .getAllTickets()
       .then((result) => result.json())
-      .then((tickets) =>
-        this.setState({ tickets: tickets, filteredTickets: tickets })
-      );
+      .then((tickets) => this.setState({ tickets: tickets }));
+      // userApis
+  }
+
+  // handl the sprint selection from the dropdown
+  handleSprintSelection(event) {
+    let filteredSprintTics = [];
+    this.state.tickets.forEach((element) => {
+      if (element.sprint[0] === event.target.value) {
+        filteredSprintTics.push(element);
+      }
+    });
+    this.setState({
+      filteredSprintTickets: filteredSprintTics,
+      filteredTickets: filteredSprintTics,
+    });
   }
   render() {
     const sprintLength = this.state.sprints.length;
@@ -117,28 +137,33 @@ class BoardComponent extends React.Component {
     let ticketOpenOptions;
     let checkedOnlyMyIssue;
     let checkedHighPriIssue;
+    // if only my issues is checked
     if (this.isOnlyMyIssuesChecked) {
       checkedOnlyMyIssue = <AiIcons.AiOutlineCheck />;
     }
+    // check for high priority issye
     if (this.isHighPriorityIssueChecked) {
       checkedHighPriIssue = <AiIcons.AiOutlineCheck />;
     }
+    // get all tickets in done state
     this.state.filteredTickets.forEach((element) => {
       if (element.status[0] === "Done") {
         ticketDone.push(element);
       }
     });
+    // get all tickets in open state
     this.state.filteredTickets.forEach((element) => {
       if (element.status[0] === "Open") {
         ticketOpen.push(element);
       }
     });
+    // get all tickets in in-progress state
     this.state.filteredTickets.forEach((element) => {
       if (element.status[0] === "In progress") {
         ticketInProgress.push(element);
       }
     });
-    // get a list of all the done tickets
+    // get a list of all the done tickets and display in the card
     if (ticketDone.length === 0) {
       <span>No ticket in done state</span>;
     } else {
@@ -179,7 +204,7 @@ class BoardComponent extends React.Component {
         );
       });
     }
-    // get the list of all the in progress ticket
+    // get the list of all the in progress ticket and display in the card
     if (ticketInProgress.length === 0) {
       <span>No ticket in done state</span>;
     } else {
@@ -220,7 +245,7 @@ class BoardComponent extends React.Component {
         );
       });
     }
-    // get the list of all the open tickets
+    // get the list of all the open tickets and display in the card layout
     if (ticketOpen.length === 0) {
       <span>No ticket in done state</span>;
     } else {
@@ -273,7 +298,11 @@ class BoardComponent extends React.Component {
       <div className="board">
         <div className="board-btns">
           <div className="board-btns-div1">
-            <select name="sprints" id="sprints">
+            <select
+              name="sprints"
+              id="sprints"
+              onChange={this.handleSprintSelection.bind(this)}
+            >
               {options}
             </select>
             <Button variant="light" onClick={this.handleAssignedTo.bind(this)}>

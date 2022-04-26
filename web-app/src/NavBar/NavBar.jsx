@@ -26,13 +26,17 @@ class NavBarC extends React.Component {
   openModal = () => this.setState({ isOpen: true });
   closeModal = () => this.setState({ isOpen: false });
 
+
+  // logout handler
   logout = (e) => {
     e.preventDefault();
     localStorage.clear();
     return <LoginForm />
   }
 
+  // open sprint modal
   openSprintModal = () => this.setState({ isSprintOpen: true });
+  // close sprint modal
   closeSprintModal = () => this.setState({ isSprintOpen: false });
 
   render() {

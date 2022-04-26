@@ -5,6 +5,7 @@ class OpenReport extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      // data to be sent to the plotly
       data: [
         {
           values: [this.props.openTicket, this.props.totalTickets],
@@ -12,6 +13,7 @@ class OpenReport extends React.Component {
           type: "pie",
         },
       ],
+      // set the layout specification
       layout: {
         autosize: false,
         height: 530,
@@ -19,6 +21,7 @@ class OpenReport extends React.Component {
       },
     };
   }
+  // set the nextProps to get the updated value
   componentWillReceiveProps(nextProps) {
     this.setState({
       data: [

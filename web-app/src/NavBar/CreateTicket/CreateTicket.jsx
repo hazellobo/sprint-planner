@@ -50,6 +50,7 @@ class Project extends React.Component {
   // openModal = () => this.setState({ isOpen: true });
   closeModal = () => this.setState({ isOpen: false });
 
+  // add a new ticket on click of the create ticket btn
   addTask() {
     const payload = {
       name: this.name.value,
@@ -58,6 +59,7 @@ class Project extends React.Component {
       createdBy: this.reporter.value,
       assignedTo: this.assignee.value,
       priority: [this.priority.value],
+      sprint: [this.sprint.value],
       status: ["Open"],
     };
     // when a new ticket is added to a sprint - also update in the sprint api
@@ -66,6 +68,7 @@ class Project extends React.Component {
     this.props.parentCallback(payload);
   }
 
+  // update the task on click of the edit btn on the grid
   updateTask() {
     const payload = {
       name: this.name.value,
@@ -75,6 +78,7 @@ class Project extends React.Component {
       assignedTo: this.assignee.value,
       priority: [this.priority.value],
       status: [this.status.value],
+      sprint: [this.sprint.value],
     };
     ticketApis
       .updateTicket(this.state.taskId, payload)
@@ -90,46 +94,54 @@ class Project extends React.Component {
       .then((allAvailableSprint) => this.setState({ allAvailableSprint }));
   }
 
+  // handler for issue type
   handleIssueType = (event) => {
     this.setState({ issueType: event.target.value });
   };
 
+  // handler for issue description
   handleTextAreaInputChange(event) {
     this.setState({
       issueDescription: event.target.value,
     });
   }
 
+  // handler for issue name
   handleTextInputChange(event) {
     this.setState({
       issueName: event.target.value,
     });
   }
 
+  /// handler for issue reporter
   handleReporter(event) {
     this.setState({
       reporter: event.target.value,
     });
   }
 
+  /// handler for issue assignee
   handleAssignee(event) {
     this.setState({
       assignee: event.target.value,
     });
   }
 
+  // handler for issue priority
   handlePriority(event) {
     this.setState({
       priority: event.target.value,
     });
   }
 
+  // handler for issue sprint
   handleSprint(event) {
     this.setState({
       sprint: event.target.value,
     });
   }
 
+  // handler for issue status
   handleStatus(event) {
     this.setState({
       status: event.target.value,
@@ -141,6 +153,7 @@ class Project extends React.Component {
     let sprintAvailableOptions;
     let title;
     let button;
+    // dropdown value population based on the avail of the sprint 
     if (sprintLength === 0) {
       sprintAvailableOptions = <option>No sprints to select</option>;
     } else {
@@ -148,6 +161,7 @@ class Project extends React.Component {
         return <option value={sprint.sprintName}> {sprint.sprintName} </option>;
       });
     }
+    // opening the popup in the edit mode
     if (this.state.isEditMode) {
       title = "Edit Ticket";
       button = (

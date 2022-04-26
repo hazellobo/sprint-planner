@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import User from "../models/user.js";
+const SECRET_KEY = "123";
 
 /**
  * Creation of a User
@@ -33,7 +34,7 @@ export const userExists = (emailId) => {
  * @returns
  */
 export const generateToken = (id) => {
-  return jwt.sign({ id }, "123", {
+  return jwt.sign({ id }, SECRET_KEY, {
     expiresIn: "30d",
   });
 };

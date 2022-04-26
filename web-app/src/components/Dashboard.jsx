@@ -7,11 +7,11 @@ import Board from "../SideBar/Board/Board";
 import Project from "../SideBar/ProjectDetails/ProjectDetails";
 import NavBarC from "../NavBar/NavBar";
 
-function Dashboard() {
- 
+function Dashboard(user) {
+  console.log("Inside Dashboard",user)
   return (
         <div className="main">
-          <NavBarC></NavBarC>
+      <NavBarC></NavBarC>
           <div className="sidebar-routes">
             <Router>
               <SideBar />

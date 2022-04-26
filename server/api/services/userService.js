@@ -10,8 +10,9 @@ const SECRET_KEY = "123";
  * @param {*} role
  * @returns
  */
-export const createUser = (emailId, password, role) => {
+export const createUser = (name,emailId, password, role) => {
   const user = User.create({
+    name,
     emailId,
     password,
     role,

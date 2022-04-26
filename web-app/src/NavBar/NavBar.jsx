@@ -7,6 +7,7 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import Container from "react-bootstrap/Container";
 import Sprint from "./CreateSprint/CreateSprint";
 import LoginForm from "../components/LoginForm";
+import { BsPersonCircle } from "react-icons/bs";
 
 class NavBarC extends React.Component {
   constructor(props) {
@@ -16,7 +17,6 @@ class NavBarC extends React.Component {
       isSprintOpen: false,
     };
   }
-
   // state = {};
   // handleModal = () => this.setState({ modalState: true });
   // handleModal() {
@@ -28,8 +28,7 @@ class NavBarC extends React.Component {
 
   logout = (e) => {
     e.preventDefault();
-    localStorage.removeItem('userToken');
-    console.log("reoved token")
+    localStorage.clear();
     return <LoginForm />
   }
 
@@ -57,17 +56,16 @@ class NavBarC extends React.Component {
             <Navbar.Collapse id="navbarScroll">
               <Nav>
                 <NavDropdown
-                  title="Profile"
+                  title={<BsPersonCircle></BsPersonCircle>}
                   id="navbarScrollingDropdown"
                   align={"end"}
                 >
-                  <NavDropdown.Item href="#" onClick={this.logout}>Logout</NavDropdown.Item>
-                  <NavDropdown.Item href="#action4">
-                    Another action
+                  <NavDropdown.Item>
+                        {/* Howdy,username */}
                   </NavDropdown.Item>
                   <NavDropdown.Divider />
-                  <NavDropdown.Item href="#action5">
-                    Something else here
+                  <NavDropdown.Item href="#" onClick={this.logout}>
+                    Logout
                   </NavDropdown.Item>
                 </NavDropdown>
               </Nav>

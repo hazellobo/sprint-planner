@@ -27,7 +27,7 @@ export const registerUser = async (req, res) => {
   try {
     const { name, emailId, password, role } = req.body;
 
-    if ((!name, !emailId || !password || !role)) {
+    if ((!name|| !emailId || !password || !role)) {
       errorHandler("Please add all fields", res);
     }
 
@@ -70,8 +70,9 @@ export const loginUser = async (req, res) => {
 
     // Check if user with given emailId exists
     const user = await userService.userExists(emailId);
-
-    if (user && (await bcrypt.compare(password, user.password))) {
+    if (!emailId || !password) {
+      errorHandler("Email and Password are required", res);
+    } else if (user && (await bcrypt.compare(password, user.password))) {
       setResponse({ user, token: generateToken(user.id) }, res);
       console.log("Login Successful");
     } else {

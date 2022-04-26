@@ -50,7 +50,8 @@ function LoginForm() {
   }
 
   return (
-    <form onSubmit={submitHandler}>
+    <div class="App">
+    <form class="loginForm" onSubmit={submitHandler}>
       <div className="form-inner">
         <h2>Login</h2>
         {error !== "" ? <div className="error">{error}</div> : ""}
@@ -61,7 +62,7 @@ function LoginForm() {
             name="emailId"
             id="emailId"
             onChange={(e) => setEmailId(e.target.value)}
-            value={emailId}
+            value={emailId} required
           />
         </div>
         <div className="form-group">
@@ -73,7 +74,7 @@ function LoginForm() {
             onChange={(e) =>
               setPassword( e.target.value)
             }
-            value={password}
+            value={password} required
           />
         </div>
         <Button
@@ -83,6 +84,8 @@ function LoginForm() {
             </Button>
       </div>
     </form>
+    </div>
+    
   );
 }
 

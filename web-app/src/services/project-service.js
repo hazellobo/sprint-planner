@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:9000/projects";
+const API_URL = "http://localhost:9001/projects";
 
 function getAllProjects() {
   return fetch(API_URL, {

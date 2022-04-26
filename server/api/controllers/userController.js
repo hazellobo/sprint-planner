@@ -25,9 +25,9 @@ const setResponse = (data, response) => {
 // @route   POST /api/users
 export const registerUser = async (req, res) => {
   try {
-    const { emailId, password, role } = req.body;
+    const { name, emailId, password, role } = req.body;
 
-    if (!emailId || !password || !role) {
+    if ((!name, !emailId || !password || !role)) {
       errorHandler("Please add all fields", res);
     }
 
@@ -43,6 +43,7 @@ export const registerUser = async (req, res) => {
 
     //Registering User
     const registeredUser = await userService.createUser(
+      name,
       emailId,
       hashedPassword,
       role

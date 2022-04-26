@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:9000/sprints";
+const API_URL = "http://localhost:9001/sprints";
 
 function getAllSprints() {
   return fetch(API_URL, {

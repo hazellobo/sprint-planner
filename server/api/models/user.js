@@ -3,6 +3,10 @@ import Mongoose from "mongoose";
 //Creation of a user Schema
 const UserSchema = new Mongoose.Schema(
   {
+    name: {
+      type: String,
+      required:[true,"Name is required"],
+    },
     emailId: {
       type: String,
       required: [true, "Email Id is required"],

@@ -24,7 +24,7 @@ function LoginForm() {
       e.preventDefault();
       const obj = { emailId, password };
     
-      await fetch(`http://localhost:9000/api/users/login`, {
+      await fetch(`http://localhost:9001/api/users/login`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -50,39 +50,42 @@ function LoginForm() {
   }
 
   return (
-    <form onSubmit={submitHandler}>
-      <div className="form-inner">
-        <h2>Login</h2>
-        {error !== "" ? <div className="error">{error}</div> : ""}
-        <div className="form-group">
-          <label htmlFor="email">Email: </label>
-          <input
-            type="email"
-            name="emailId"
-            id="emailId"
-            onChange={(e) => setEmailId(e.target.value)}
-            value={emailId}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password"> Password: </label>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            onChange={(e) =>
-              setPassword( e.target.value)
-            }
-            value={password}
-          />
-        </div>
-        <Button
-              type='submit'
-            >
-              Login
-            </Button>
-      </div>
-    </form>
+    <div className="App">
+    <form className="loginForm" onSubmit={submitHandler}>
+          <div className="form-inner">
+            <h2>Login</h2>
+            {error !== "" ? <div className="error">{error}</div> : ""}
+            <div className="form-group">
+              <label htmlFor="email">Email: </label>
+              <input
+                type="email"
+                name="emailId"
+                id="emailId"
+                onChange={(e) => setEmailId(e.target.value)}
+                value={emailId}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="password"> Password: </label>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                onChange={(e) =>
+                  setPassword( e.target.value)
+                }
+                value={password}
+              />
+            </div>
+            <Button
+                  type='submit'
+                >
+                  Login
+                </Button>
+          </div>
+        </form>
+    </div>
+    
   );
 }
 

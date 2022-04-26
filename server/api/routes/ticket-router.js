@@ -7,7 +7,7 @@ const router = express.Router();
 router.route("/tickets").post(controller.post).get(controller.index);
 
 // routes for update, delete and get with an id
-router.route("/tickets/:id").get(controller.get).put(controller.update);
+router.route("/tickets/:id").get(controller.get).put(controller.update).delete(controller.remove);
 
 export default router;
 

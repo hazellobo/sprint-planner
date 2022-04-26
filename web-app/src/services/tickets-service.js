@@ -32,6 +32,16 @@ function createTicket(task) {
   });
 }
 
-const ticketApis = { updateTicket, getAllTickets, createTicket };
+// delete ticket
+function deleteTicket(ticketId) {
+  return fetch(`${API_URL}/${ticketId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+}
+
+const ticketApis = { updateTicket, getAllTickets, createTicket, deleteTicket };
 
 export default ticketApis;

@@ -21,8 +21,6 @@ class TaskList extends React.Component {
         enableRowGroup: true,
         enablePivot: true,
         enableValue: true,
-        sortable: true,
-        filter: true,
         resizable: true,
       },
       isOpen: false,
@@ -41,9 +39,9 @@ class TaskList extends React.Component {
       columnDefs: [
         { field: "name" },
         { field: "description" },
-        { field: "assignedTo" },
+        { field: "assignedTo", width: "150" },
         { field: "status", width: "150" },
-        { field: "ticketType", width: "175" },
+        { field: "ticketType", width: "150" },
         {
           field: "priority",
           width: "150",
@@ -59,7 +57,7 @@ class TaskList extends React.Component {
         },
         {
           field: "edit",
-          width: "150",
+          width: "110",
           cellRenderer: () => {
             return (
               <Button
@@ -67,6 +65,20 @@ class TaskList extends React.Component {
                 onClick={this.getSelectedRowData.bind(this)}
               >
                 <AiIcons.AiFillEdit />
+              </Button>
+            );
+          },
+        },
+        {
+          field: "delete",
+          width: "110",
+          cellRenderer: () => {
+            return (
+              <Button
+                variant="light"
+                onClick={this.deleteSelectedTicket.bind(this)}
+              >
+                <AiIcons.AiFillDelete />
               </Button>
             );
           },
@@ -118,6 +130,26 @@ class TaskList extends React.Component {
       taskId: selectedData[0].id,
     });
   };
+
+  deleteSelectedTicket() {
+    let selectedNodes = this.gridApi.getSelectedNodes();
+    let selectedData = selectedNodes.map((node) => node.data);
+    ticketApis.deleteTicket(selectedData[0].id).then((result) => {
+      ticketApis
+        .getAllTickets()
+        .then((result) => result.json())
+        .then((res) => {
+          this.setState({ allTickets: res });
+          let filteredSprintTickets = [];
+          res.forEach((element) => {
+            if (element.sprint[0] === this.state.selectedSprint.sprintName) {
+              filteredSprintTickets.push(element);
+            }
+          });
+          this.setState({ rowData: filteredSprintTickets });
+        });
+    });
+  }
 
   handleCreateTicket() {
     this.setState({

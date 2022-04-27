@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import sprintApis from "../../services/sprint-service";
@@ -354,21 +354,23 @@ class BoardComponent extends React.Component {
               Only high priority issue
             </Button>
           </div>
-          <FormControl
-            type="search"
-            placeholder="Search by ticket name"
-            className="me-2"
-            aria-label="Search"
-            onChange={(event) =>
-              this.setState({ searchWord: event.target.value })
-            }
-          />
-          <Button
-            variant="primary"
-            onClick={this.displayTicketsBySearchBox.bind(this)}
-          >
-            Search
-          </Button>
+          <div className="search-bar">
+            <FormControl
+              type="search"
+              placeholder="Search by ticket name"
+              className="me-2"
+              aria-label="Search"
+              onChange={(event) =>
+                this.setState({ searchWord: event.target.value })
+              }
+            />
+            <Button
+              variant="primary"
+              onClick={this.displayTicketsBySearchBox.bind(this)}
+            >
+              Search
+            </Button>
+          </div>
         </div>
         <div className="card-div">
           <Card>

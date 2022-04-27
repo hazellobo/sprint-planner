@@ -10,7 +10,6 @@ function SideBar() {
   const [sidebar, setSidebar] = useState(true);
 
   const showSidebar = () => setSidebar(!sidebar);
-
   return (
     <>
       <IconContext.Provider value={{ color: "#35333b" }}>
@@ -38,10 +37,14 @@ function SideBar() {
               );
             })}
           </ul>
+          
         </nav>
+        
       </IconContext.Provider>
     </>
   );
 }
+
+
 
 export default SideBar;

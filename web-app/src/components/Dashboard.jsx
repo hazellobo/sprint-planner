@@ -16,7 +16,7 @@ function Dashboard() {
             <Router>
               <SideBar />
               <Switch>
-                <Route path="/tasks" exact component={TaskList} />
+                <Route path="/tasks" exact component={TaskList}  />
                 <Route path="/board" exact component={Board} />
                 <Route path="/reports" component={Reports} />
                 <Route path="/project" component={Project} />

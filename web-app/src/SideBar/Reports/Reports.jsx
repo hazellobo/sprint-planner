@@ -1,3 +1,4 @@
+// Logic for the Report
 import React from "react";
 import Plot from "react-plotly.js";
 import "./Reports.scss";

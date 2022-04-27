@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import sprintApis from "../../services/sprint-service";
@@ -43,6 +43,7 @@ class BoardComponent extends React.Component {
       isOpenFlip: false,
       isInProgressFlip: false,
       isDoneFlip: false,
+      searchWord: "",
     };
   }
   isOnlyMyIssuesChecked = false;
@@ -143,6 +144,25 @@ class BoardComponent extends React.Component {
       filteredTickets: filteredSprintTics,
     });
   }
+
+  displayTicketsBySearchBox() {
+    let filtered = [];
+    console.log("displayTicketsBySearchBox()");
+    if (this.state.searchWord !== "") {
+      this.state.filteredSprintTickets
+        .filter((ticket) =>
+          ticket.name
+            .toLowerCase()
+            .includes(this.state.searchWord.toLowerCase())
+        )
+        .map((ticket) => filtered.push(ticket));
+      this.setState({ filteredTickets: filtered });
+    } else {
+      this.setState({ filteredTickets: this.state.filteredSprintTickets });
+    }
+    console.log(this.state.filteredTickets);
+  }
+
   render() {
     const sprintLength = this.state.sprints.length;
     let options;
@@ -339,7 +359,16 @@ class BoardComponent extends React.Component {
             placeholder="Search by ticket name"
             className="me-2"
             aria-label="Search"
+            onChange={(event) =>
+              this.setState({ searchWord: event.target.value })
+            }
           />
+          <Button
+            variant="primary"
+            onClick={this.displayTicketsBySearchBox.bind(this)}
+          >
+            Search
+          </Button>
         </div>
         <div className="card-div">
           <Card>

@@ -1,3 +1,5 @@
+// Code for the main Dashboard Page after logging in
+
 import React from 'react'
 import SideBar from "../SideBar/SideBar";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";

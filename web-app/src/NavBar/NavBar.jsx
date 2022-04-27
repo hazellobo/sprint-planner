@@ -1,3 +1,4 @@
+// Creating the Navbar Section for the Sprint Planner Page
 import React from "react";
 import "./NavBar.scss";
 import Button from "react-bootstrap/Button";

@@ -215,7 +215,7 @@ class TaskList extends React.Component {
     const payload = {
       name: this.state.selectedSprint.sprintName,
       duration: this.state.selectedSprint.sprintDuration,
-      status: this.state.selectedSprint.status,
+      status: ["Active"],
       startDate: moment(),
       endDate: moment().add(
         parseInt(this.state.selectedSprint.sprintDuration, 10),
@@ -230,7 +230,6 @@ class TaskList extends React.Component {
   render() {
     let options;
     let sprintLength = this.state.sprints.length;
-    let isSelectedSprintActive = this.state.selectedSprint.status;
     let activeStatus;
     let createButton;
     if (sprintLength === 0) {
@@ -245,21 +244,26 @@ class TaskList extends React.Component {
         </Button>
       );
     }
-    if (isSelectedSprintActive === "Active") {
-      activeStatus = (
-        <span>
-          Start date :{" "}
-          {moment(this.state.selectedSprint.startDate).format("MMM Do YYYY")} -
-          End date :{" "}
-          {moment(this.state.selectedSprint.endDate).format("MMM Do YYYY")}
-        </span>
-      );
-    } else {
-      activeStatus = (
-        <Button variant="primary" onClick={this.handleSprint.bind(this)}>
-          Start Sprint
-        </Button>
-      );
+    if (this.state.selectedSprint) {
+      if (
+        JSON.stringify(this.state.selectedSprint.status) ===
+        JSON.stringify(["Active"])
+      ) {
+        activeStatus = (
+          <span>
+            Start date :{" "}
+            {moment(this.state.selectedSprint.startDate).format("MMM Do YYYY")}{" "}
+            - End date :{" "}
+            {moment(this.state.selectedSprint.endDate).format("MMM Do YYYY")}
+          </span>
+        );
+      } else {
+        activeStatus = (
+          <Button variant="primary" onClick={this.handleSprint.bind(this)}>
+            Start Sprint
+          </Button>
+        );
+      }
     }
     return (
       <div className="tasklist">

@@ -37,7 +37,7 @@ function LoginForm() {
           setToken(result.token);
           setUser(result.user);
           localStorage.setItem("userToken", result.token);
-          localStorage.setItem("user", JSON.stringify(result.user));
+          localStorage.setItem("emailId", result.user.emailId);
         } else {
           setError(result.error);
         }

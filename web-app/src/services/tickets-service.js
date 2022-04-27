@@ -1,5 +1,6 @@
 const API_URL = "http://localhost:9000/tickets";
 
+// fetch get all tickets
 function getAllTickets() {
   return fetch(API_URL, {
     method: "GET",
@@ -9,6 +10,7 @@ function getAllTickets() {
   });
 }
 
+// fetch update tickets
 function updateTicket(id, updatedStatus) {
   return fetch(`${API_URL}/${id}`, {
     method: "PUT",
@@ -19,6 +21,7 @@ function updateTicket(id, updatedStatus) {
   });
 }
 
+// fetch create tickets
 function createTicket(task) {
   return fetch(API_URL, {
     method: "POST",
@@ -29,6 +32,16 @@ function createTicket(task) {
   });
 }
 
-const ticketApis = { updateTicket, getAllTickets, createTicket };
+// delete ticket
+function deleteTicket(ticketId) {
+  return fetch(`${API_URL}/${ticketId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+}
+
+const ticketApis = { updateTicket, getAllTickets, createTicket, deleteTicket };
 
 export default ticketApis;

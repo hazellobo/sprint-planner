@@ -117,16 +117,16 @@ export const update = async (request, response) => {
   }
 };
 
-// delete a todo item
-// export const remove = async (request, response) => {
-//   try {
-//     // since the id to be deleted is a url param - use request.params
-//     const id = request.params.id;
-//     await service.remove(id);
-//     // set the success response with a message
-//     setSuccessResponse({ message: `todo item deleted ${id}` }, response);
-//   } catch (error) {
-//       // set the error response
-//     setErrorResponse(error, response);
-//   }
-// };
+// delete a ticket
+export const remove = async (request, response) => {
+  try {
+    // since the id to be deleted is a url param - use request.params
+    const id = request.params.id;
+    await service.remove(id);
+    // set the success response with a message
+    setSuccessResponse({ message: `ticket deleted ${id}` }, response);
+  } catch (error) {
+      // set the error response
+    setErrorResponse(error, response);
+  }
+};

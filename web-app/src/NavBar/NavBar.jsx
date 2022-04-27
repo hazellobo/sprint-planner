@@ -8,16 +8,17 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import Container from "react-bootstrap/Container";
 import Sprint from "./CreateSprint/CreateSprint";
 import LoginForm from "../components/LoginForm";
-
+import { BsPersonCircle } from "react-icons/bs";
+import logo from "../assets/logo.png";
 class NavBarC extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isOpen: false,
       isSprintOpen: false,
+      userCred: this.props.userCred,
     };
   }
-
   // state = {};
   // handleModal = () => this.setState({ modalState: true });
   // handleModal() {
@@ -27,14 +28,16 @@ class NavBarC extends React.Component {
   openModal = () => this.setState({ isOpen: true });
   closeModal = () => this.setState({ isOpen: false });
 
+  // logout handler
   logout = (e) => {
-    e.preventDefault();
-    localStorage.removeItem('userToken');
-    console.log("reoved token")
-    return <LoginForm />
-  }
+    localStorage.clear();
+    window.location.reload(false);
+    return <LoginForm />;
+  };
 
+  // open sprint modal
   openSprintModal = () => this.setState({ isSprintOpen: true });
+  // close sprint modal
   closeSprintModal = () => this.setState({ isSprintOpen: false });
 
   render() {
@@ -44,8 +47,8 @@ class NavBarC extends React.Component {
           <Container fluid>
             <Navbar.Brand>
               <img
-                alt=""
-                src="/logo.svg"
+                alt="logo"
+                src={logo}
                 width="30"
                 height="30"
                 className="d-inline-block align-top"
@@ -58,17 +61,16 @@ class NavBarC extends React.Component {
             <Navbar.Collapse id="navbarScroll">
               <Nav>
                 <NavDropdown
-                  title="Profile"
+                  title={<BsPersonCircle></BsPersonCircle>}
                   id="navbarScrollingDropdown"
                   align={"end"}
                 >
-                  <NavDropdown.Item href="#" onClick={this.logout}>Logout</NavDropdown.Item>
-                  <NavDropdown.Item href="#action4">
-                    Another action
+                  <NavDropdown.Item>
+                    Howdy,{this.state.userCred.name}
                   </NavDropdown.Item>
                   <NavDropdown.Divider />
-                  <NavDropdown.Item href="#action5">
-                    Something else here
+                  <NavDropdown.Item href="#" onClick={this.logout}>
+                    Logout
                   </NavDropdown.Item>
                 </NavDropdown>
               </Nav>

@@ -8,6 +8,7 @@ import Button from "react-bootstrap/Button";
 import ticketApis from "../../services/tickets-service.js";
 import "./CreateTicket.scss";
 import sprintApis from "../../services/sprint-service.js";
+import userApis from "../../services/user-service.js";
 
 require("react-bootstrap/ModalHeader");
 
@@ -28,6 +29,7 @@ class Project extends React.Component {
       users: [],
       sprints: [],
       allAvailableSprint: [],
+      loggedinUser: "",
       // TicketSprint: "",
     };
     this.handleTextInputChange = this.handleTextInputChange.bind(this);
@@ -50,8 +52,9 @@ class Project extends React.Component {
   }
 
   // openModal = () => this.setState({ isOpen: true });
-  closeModal = () => this.setState({ isOpen: false });
+  closeModal = () => this.setState({ isOpen: false, error:"" });
 
+  // add a new ticket on click of the create ticket btn
   addTask() {
     const payload = {
       name: this.name.value,
@@ -60,14 +63,22 @@ class Project extends React.Component {
       createdBy: this.reporter.value,
       assignedTo: this.assignee.value,
       priority: [this.priority.value],
+      sprint: [this.sprint.value],
       status: ["Open"],
     };
     // when a new ticket is added to a sprint - also update in the sprint api
-    ticketApis.createTicket(payload).then((result) => result.json());
-    this.closeModal();
-    this.props.parentCallback(payload);
+    if (!payload.name || !payload.description || !payload.ticketType || !payload.createdBy || !payload.assignedTo ||
+      !payload.priority || !payload.status || !payload.sprint) {
+            this.setState({ error: "All fields are mandatory" });
+    } else {
+       ticketApis.createTicket(payload).then((result) => result.json());
+       this.closeModal();
+       this.props.parentCallback(payload);
+    }   
+   
   }
 
+  // update the task on click of the edit btn on the grid
   updateTask() {
     const payload = {
       name: this.name.value,
@@ -77,61 +88,91 @@ class Project extends React.Component {
       assignedTo: this.assignee.value,
       priority: [this.priority.value],
       status: [this.status.value],
+      sprint: [this.sprint.value],
     };
-    ticketApis
-      .updateTicket(this.state.taskId, payload)
-      .then((result) =>
-        result.json().then((res) => this.props.parentCallback(res))
-      );
-    this.closeModal();
+
+    if (!payload.name || !payload.description || !payload.ticketType || !payload.createdBy || !payload.assignedTo ||
+      !payload.priority || !payload.status || !payload.sprint) {
+            this.setState({ error: "All fields are mandatory" });
+    } else {
+      ticketApis
+        .updateTicket(this.state.taskId, payload)
+        .then((result) =>
+          result.json().then((res) => this.props.parentCallback(res))
+        );
+      this.closeModal();
+    }  
   }
   componentDidMount() {
     sprintApis
       .getAllSprints()
       .then((result) => result.json())
       .then((allAvailableSprint) => this.setState({ allAvailableSprint }));
+
+    userApis
+      .getAllUsers()
+      .then((result) => result.json())
+      .then((users) =>
+        this.setState({ users }, () => {
+          this.state.users.forEach((user) => {
+            if (user.emailId === localStorage.getItem("emailId")) {
+              let reporter = user.name;
+              this.setState({ loggedinUser: reporter });
+              return <option value={reporter}> {reporter} </option>;
+            }
+          });
+        })
+      );
   }
 
+  // handler for issue type
   handleIssueType = (event) => {
     this.setState({ issueType: event.target.value });
   };
 
+  // handler for issue description
   handleTextAreaInputChange(event) {
     this.setState({
       issueDescription: event.target.value,
     });
   }
 
+  // handler for issue name
   handleTextInputChange(event) {
     this.setState({
       issueName: event.target.value,
     });
   }
 
+  /// handler for issue reporter
   handleReporter(event) {
     this.setState({
       reporter: event.target.value,
     });
   }
 
+  /// handler for issue assignee
   handleAssignee(event) {
     this.setState({
       assignee: event.target.value,
     });
   }
 
+  // handler for issue priority
   handlePriority(event) {
     this.setState({
       priority: event.target.value,
     });
   }
 
+  // handler for issue sprint
   handleSprint(event) {
     this.setState({
       sprint: event.target.value,
     });
   }
 
+  // handler for issue status
   handleStatus(event) {
     this.setState({
       status: event.target.value,
@@ -140,9 +181,12 @@ class Project extends React.Component {
 
   render() {
     const sprintLength = this.state.allAvailableSprint.length;
+    const userLength = this.state.users.length;
     let sprintAvailableOptions;
+    let userAvailableOptions;
     let title;
     let button;
+    // dropdown value population based on the avail of the sprint
     if (sprintLength === 0) {
       sprintAvailableOptions = <option>No sprints to select</option>;
     } else {
@@ -150,6 +194,8 @@ class Project extends React.Component {
         return <option value={sprint.sprintName}> {sprint.sprintName} </option>;
       });
     }
+
+    // opening the popup in the edit mode
     if (this.state.isEditMode) {
       title = "Edit Ticket";
       button = (
@@ -179,6 +225,11 @@ class Project extends React.Component {
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          {this.state.error !== "" ? (
+            <div className="error">{this.state.error}</div>
+          ) : (
+            ""
+          )}
           <form>
             <div className="mb-3">
               <label className="form-label">Name</label>
@@ -218,7 +269,7 @@ class Project extends React.Component {
                 ref={(c) => (this.reporter = c)}
                 value={this.state.reporter}
               >
-                <option value="Aravind">Aravind</option>
+                <option>{this.state.loggedinUser}</option>
                 {/* {this.state.users.map((User) => {
       return <option value={User}> {User} </option>;
     })} */}
@@ -231,10 +282,9 @@ class Project extends React.Component {
                 ref={(c) => (this.assignee = c)}
                 value={this.state.assignee}
               >
-                <option value="Aravind">Aravind</option>
-                {/* {this.state.users.map((User) => {
-      return <option value={User}> {User} </option>;
-    })} */}
+                {this.state.users.map((User) => {
+                  return <option value={User.name}> {User.name} </option>;
+                })}
               </select>
             </div>
 

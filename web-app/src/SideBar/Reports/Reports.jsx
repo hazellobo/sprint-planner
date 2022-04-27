@@ -7,17 +7,29 @@ class Reports extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [
+      pieChartData: [
         {
           values: [19, 26, 55],
           labels: ["In progress", "Open", "Done"],
           type: "pie",
         },
       ],
-      layout: {
+      pieChartLayout: {
         height: 400,
         width: 500,
         title: "Report of the active sprint",
+      },
+      barChartData: [
+        {
+          y: [3, 2, 5],
+          x: ["Aravind", "Anvitha", "Hazel"],
+          type: "bar",
+        },
+      ],
+      barChartLayout: {
+        height: 400,
+        width: 500,
+        title: "Tickets assigned to each developer",
       },
     };
   }
@@ -25,8 +37,14 @@ class Reports extends React.Component {
     return (
       <div className="report">
         <Plot
-          data={this.state.data}
-          layout={this.state.layout}
+          data={this.state.pieChartData}
+          layout={this.state.pieChartLayout}
+          onInitialized={(figure) => this.setState(figure)}
+          onUpdate={(figure) => this.setState(figure)}
+        />
+        <Plot
+          data={this.state.barChartData}
+          layout={this.state.barChartLayout}
           onInitialized={(figure) => this.setState(figure)}
           onUpdate={(figure) => this.setState(figure)}
         />

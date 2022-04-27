@@ -32,8 +32,8 @@ export const update = (updatedTodo) => {
   return ticket;
 };
 
-// remove/ delete a todo item
-// export const remove = (id) => {
-//   const todo = TicketSchema.findByIdAndDelete(id).exec();
-//   return todo;
-// };
+// remove/ delete a ticket item
+export const remove = (id) => {
+  const ticket = Ticket.findByIdAndDelete(id).exec();
+  return ticket;
+};

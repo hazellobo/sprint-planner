@@ -1,5 +1,6 @@
 const API_URL = "http://localhost:9000/sprints";
 
+// fetch get all sprints
 function getAllSprints() {
   return fetch(API_URL, {
     method: "GET",
@@ -9,6 +10,7 @@ function getAllSprints() {
   });
 }
 
+// fetch update sprints
 function updateSprint(id, updatedStatus) {
   return fetch(`${API_URL}/${id}`, {
     method: "PUT",
@@ -19,6 +21,7 @@ function updateSprint(id, updatedStatus) {
   });
 }
 
+// fetch create sprint
 function createSprint(task) {
   return fetch(API_URL, {
     method: "POST",

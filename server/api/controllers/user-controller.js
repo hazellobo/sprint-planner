@@ -1,5 +1,6 @@
-import * as userService from "../services/userService.js";
+import * as userService from "../services/user-service.js";
 import bcrypt from "bcryptjs";
+import User from "../models/user.js";
 
 /**
  * Error handler function to display Error
@@ -27,7 +28,7 @@ export const registerUser = async (req, res) => {
   try {
     const { name, emailId, password, role } = req.body;
 
-    if ((!name, !emailId || !password || !role)) {
+    if (!name || !emailId || !password || !role) {
       errorHandler("Please add all fields", res);
     }
 
@@ -70,8 +71,9 @@ export const loginUser = async (req, res) => {
 
     // Check if user with given emailId exists
     const user = await userService.userExists(emailId);
-
-    if (user && (await bcrypt.compare(password, user.password))) {
+    if (!emailId || !password) {
+      errorHandler("All fields are mandatory", res);
+    } else if (user && (await bcrypt.compare(password, user.password))) {
       setResponse({ user, token: generateToken(user.id) }, res);
       console.log("Login Successful");
     } else {
@@ -91,4 +93,24 @@ export const getMe = async (req, res) => {
 // Token Generation
 const generateToken = (id) => {
   return userService.generateToken(id);
+};
+
+// search for users
+export const index = async (request, response) => {
+  // try the querying with
+  try {
+    //   since the id is added as a query to the url - use request.query
+    const id = request.query.id;
+    const query = {};
+    // add to query only when title is added to the url as query param
+    if (id) {
+      query.id = id;
+    }
+    const user = await userService.search(query);
+    // set the success response
+    setResponse(user, response);
+  } catch (error) {
+    // set the error response
+    errorHandler(error, response);
+  }
 };

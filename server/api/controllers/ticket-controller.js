@@ -96,8 +96,8 @@ export const update = async (request, response) => {
 
     var mailOptions = {
       from: 'inventorymanagementaas@gmail.com',
-      //to: payload.assignedTo,
-      to: 'polepeddiaravind@gmail.com',
+      to: updated.assigneeEmailID[0],
+      //to: 'polepeddiaravind@gmail.com',
       subject: 'A ticket has been assigned to you',
       html: '<h1>Greetings from SprintManager</h1><br><p>The ticket: '+updated.name+' has been assigned to you</p><br><p>ReportedBy:'+updated.createdBy+' </p><br><p>Description:'+updated.description+'</p><br><p>Ticket Type: '+updated.ticketType[0]+'</p>'
     };

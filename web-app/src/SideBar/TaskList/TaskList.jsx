@@ -12,6 +12,7 @@ import * as VscIcons from "react-icons/vsc";
 import CreateTicket from "./../../NavBar/CreateTicket/CreateTicket";
 import sprintApis from "../../services/sprint-service";
 import moment from "moment";
+import CreateSprint from "../../NavBar/CreateSprint/CreateSprint";
 
 class TaskList extends React.Component {
   constructor(props) {
@@ -37,6 +38,7 @@ class TaskList extends React.Component {
       sprints: [],
       allTickets: [],
       selectedSprintName: "",
+      isSprintOpen: false,
       columnDefs: [
         { field: "name" },
         { field: "description" },
@@ -90,6 +92,9 @@ class TaskList extends React.Component {
   }
   openModal = () => this.setState({ isOpen: true });
   closeModal = () => this.setState({ isOpen: false });
+
+  openSprintModal = () => this.setState({ isSprintOpen: true });
+  closeSprintModal = () => this.setState({ isSprintOpen: false });
 
   componentDidMount() {
     sprintApis
@@ -204,6 +209,11 @@ class TaskList extends React.Component {
     this.closeModal();
   };
 
+  handleSprintCallback(childData) {
+    this.setState({ sprints: [...this.state.sprints, childData] });
+    this.closeSprintModal();
+  }
+
   setSelectedSprint(event) {
     let filteredSprintTickets = [];
     this.state.sprints.forEach((element) => {
@@ -282,15 +292,20 @@ class TaskList extends React.Component {
     return (
       <div className="tasklist">
         <div className="edit-ticket-btn">
-          <select
-            name="sprints"
-            id="sprints"
-            value={this.state.selectedSprintName}
-            onChange={this.setSelectedSprint.bind(this)}
-            ref={(c) => (this.selectedSprintName = c)}
-          >
-            {options}
-          </select>
+          <div className="sprint-div">
+            <select
+              name="sprints"
+              id="sprints"
+              value={this.state.selectedSprintName}
+              onChange={this.setSelectedSprint.bind(this)}
+              ref={(c) => (this.selectedSprintName = c)}
+            >
+              {options}
+            </select>
+            <Button variant="primary" onClick={this.openSprintModal}>
+              Create Sprint
+            </Button>
+          </div>
           {activeStatus}
         </div>
 
@@ -320,6 +335,10 @@ class TaskList extends React.Component {
           issueType={[this.state.issueType]}
           taskId={this.state.taskId}
         ></CreateTicket>
+        <CreateSprint
+          sprintParentCallback={this.handleSprintCallback.bind(this)}
+          isSprintOpen={this.state.isSprintOpen}
+        ></CreateSprint>
       </div>
     );
   }

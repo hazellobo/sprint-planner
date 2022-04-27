@@ -50,7 +50,7 @@ class Project extends React.Component {
   }
 
   // openModal = () => this.setState({ isOpen: true });
-  closeModal = () => this.setState({ isOpen: false, error:"" });
+  closeModal = () => this.setState({ isOpen: false, error: "" });
 
   // add a new ticket on click of the create ticket btn
   addTask() {
@@ -65,15 +65,22 @@ class Project extends React.Component {
       status: ["Open"],
     };
     // when a new ticket is added to a sprint - also update in the sprint api
-    if (!payload.name || !payload.description || !payload.ticketType || !payload.createdBy || !payload.assignedTo ||
-      !payload.priority || !payload.status || !payload.sprint) {
-            this.setState({ error: "All fields are mandatory" });
+    if (
+      !payload.name ||
+      !payload.description ||
+      !payload.ticketType ||
+      !payload.createdBy ||
+      !payload.assignedTo ||
+      !payload.priority ||
+      !payload.status ||
+      !payload.sprint
+    ) {
+      this.setState({ error: "All fields are mandatory" });
     } else {
-       ticketApis.createTicket(payload).then((result) => result.json());
-       this.closeModal();
-       this.props.parentCallback(payload);
-    }   
-   
+      ticketApis.createTicket(payload).then((result) => result.json());
+      this.closeModal();
+      this.props.parentCallback(payload);
+    }
   }
 
   // update the task on click of the edit btn on the grid
@@ -89,9 +96,17 @@ class Project extends React.Component {
       sprint: [this.sprint.value],
     };
 
-    if (!payload.name || !payload.description || !payload.ticketType || !payload.createdBy || !payload.assignedTo ||
-      !payload.priority || !payload.status || !payload.sprint) {
-            this.setState({ error: "All fields are mandatory" });
+    if (
+      !payload.name ||
+      !payload.description ||
+      !payload.ticketType ||
+      !payload.createdBy ||
+      !payload.assignedTo ||
+      !payload.priority ||
+      !payload.status ||
+      !payload.sprint
+    ) {
+      this.setState({ error: "All fields are mandatory" });
     } else {
       ticketApis
         .updateTicket(this.state.taskId, payload)
@@ -99,7 +114,7 @@ class Project extends React.Component {
           result.json().then((res) => this.props.parentCallback(res))
         );
       this.closeModal();
-    }  
+    }
   }
   componentDidMount() {
     sprintApis
@@ -179,9 +194,7 @@ class Project extends React.Component {
 
   render() {
     const sprintLength = this.state.allAvailableSprint.length;
-    const userLength = this.state.users.length;
     let sprintAvailableOptions;
-    let userAvailableOptions;
     let title;
     let button;
     // dropdown value population based on the avail of the sprint

@@ -15,7 +15,7 @@ class Sprint extends React.Component {
       sprintDuration: "",
       sprintGoal: "",
       ismatches: false,
-      error:"",
+      error: "",
 
       // TicketSprint: "",
     };
@@ -28,7 +28,7 @@ class Sprint extends React.Component {
   }
 
   // openModal = () => this.setState({ isOpen: true });
-  closeModal = () => this.setState({ isSprintOpen: false , error:""});
+  closeModal = () => this.setState({ isSprintOpen: false, error: "" });
 
   createSprint() {
     // const { sprintName, sprintDuration } = this.state;
@@ -48,8 +48,8 @@ class Sprint extends React.Component {
       return;
     } else {
       sprintApis.createSprint(payload).then((res) => res.json());
-       console.log(payload);
-       this.closeModal();
+      this.props.sprintParentCallback(payload);
+      this.closeModal();
     }
     // {
     // this.setState({
@@ -58,7 +58,6 @@ class Sprint extends React.Component {
     //     sprintGoal: "",
     // })
     // });
-   
   }
 
   // handleChange(event) {
@@ -107,7 +106,10 @@ class Sprint extends React.Component {
         </Modal.Header>
         <Modal.Body>
           {this.state.error !== "" ? (
-            <div className="error">{this.state.error}</div>) : ("" )}
+            <div className="error">{this.state.error}</div>
+          ) : (
+            ""
+          )}
           <form>
             <div className="mb-3">
               <label className="form-label">Name</label>

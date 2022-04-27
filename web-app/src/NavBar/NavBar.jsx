@@ -1,6 +1,6 @@
+// Creating the Navbar Section for the Sprint Planner Page
 import React from "react";
 import "./NavBar.scss";
-import Button from "react-bootstrap/Button";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
@@ -18,17 +18,13 @@ class NavBarC extends React.Component {
       username: this.props.username,
     };
   }
-  // state = {};
-  // handleModal = () => this.setState({ modalState: true });
-  // handleModal() {
-  //   this.setState({modalState: })
-  //   this.state.modalState = !this.state.modalState;
-  // }
+
   componentWillReceiveProps(nextProps) {
     this.setState({
       username: nextProps.username,
     });
   }
+
   openModal = () => this.setState({ isOpen: true });
   closeModal = () => this.setState({ isOpen: false });
 
@@ -59,9 +55,6 @@ class NavBarC extends React.Component {
               />{" "}
               Sprint Planner
             </Navbar.Brand>
-            <Button variant="primary" onClick={this.openSprintModal}>
-              Create Sprint
-            </Button>
             <Navbar.Collapse id="navbarScroll">
               <Nav>
                 <NavDropdown

@@ -10,7 +10,9 @@ export const SidebarData = [
     path: "/tasks",
     icon: <AiIcons.AiOutlineUnorderedList />,
     cName: "nav-text",
-  },
+  },  
+  
+  ,
   {
     title: "Board",
     path: "/board",

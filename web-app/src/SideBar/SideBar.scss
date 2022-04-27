@@ -1,3 +1,5 @@
+// Adding the css for sidebar
+
 .navbar-side {
   background-color: #fcfcfc;
   display: flex;
@@ -56,6 +58,9 @@
 
 .nav-text a:hover {
   background-color: #f1f1f3;
+}
+.nav-text:hover {
+  background-color: lightgray;
 }
 
 .nav-menu-items {

@@ -8,7 +8,7 @@ import routes from "./routes/index.js";
 const app = express();
 
 // connect to the database
-mongoose.connect("mongodb://localhost:27017/sprintplannerdb");
+mongoose.connect("mongodb://0.0.0.0:27017/sprintplannerdb");
 
 app.use(express.json());
 app.use(express.urlencoded());

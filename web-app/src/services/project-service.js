@@ -1,3 +1,4 @@
+// Creating the function updateProjects and createProjects so that the user can create and update the project
 const API_URL = "http://localhost:9000/projects";
 
 // fetch get all projects

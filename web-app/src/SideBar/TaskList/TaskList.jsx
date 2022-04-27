@@ -12,6 +12,7 @@ import * as VscIcons from "react-icons/vsc";
 import CreateTicket from "./../../NavBar/CreateTicket/CreateTicket";
 import sprintApis from "../../services/sprint-service";
 import moment from "moment";
+import CreateSprint from "../../NavBar/CreateSprint/CreateSprint";
 
 class TaskList extends React.Component {
   constructor(props) {
@@ -36,6 +37,8 @@ class TaskList extends React.Component {
       selectedSprint: [],
       sprints: [],
       allTickets: [],
+      selectedSprintName: "",
+      isSprintOpen: false,
       columnDefs: [
         { field: "name" },
         { field: "description" },
@@ -90,28 +93,38 @@ class TaskList extends React.Component {
   openModal = () => this.setState({ isOpen: true });
   closeModal = () => this.setState({ isOpen: false });
 
+  openSprintModal = () => this.setState({ isSprintOpen: true });
+  closeSprintModal = () => this.setState({ isSprintOpen: false });
+
   componentDidMount() {
     sprintApis
       .getAllSprints()
       .then((result) => result.json())
       .then((sprints) =>
-        this.setState({ sprints, selectedSprint: sprints[0] }, () => {
-          ticketApis
-            .getAllTickets()
-            .then((result) => result.json())
-            .then((res) => {
-              this.setState({ allTickets: res });
-              let filteredSprintTickets = [];
-              res.forEach((element) => {
-                if (
-                  element.sprint[0] === this.state.selectedSprint.sprintName
-                ) {
-                  filteredSprintTickets.push(element);
-                }
+        this.setState(
+          {
+            sprints,
+            selectedSprint: sprints[0],
+            selectedSprintName: sprints[0].sprintName,
+          },
+          () => {
+            ticketApis
+              .getAllTickets()
+              .then((result) => result.json())
+              .then((res) => {
+                this.setState({ allTickets: res });
+                let filteredSprintTickets = [];
+                res.forEach((element) => {
+                  if (
+                    element.sprint[0] === this.state.selectedSprint.sprintName
+                  ) {
+                    filteredSprintTickets.push(element);
+                  }
+                });
+                this.setState({ rowData: filteredSprintTickets });
               });
-              this.setState({ rowData: filteredSprintTickets });
-            });
-        })
+          }
+        )
       );
   }
 
@@ -196,11 +209,19 @@ class TaskList extends React.Component {
     this.closeModal();
   };
 
+  handleSprintCallback(childData) {
+    this.setState({ sprints: [...this.state.sprints, childData] });
+    this.closeSprintModal();
+  }
+
   setSelectedSprint(event) {
     let filteredSprintTickets = [];
     this.state.sprints.forEach((element) => {
       if (element.sprintName === event.target.value) {
-        this.setState({ selectedSprint: element });
+        this.setState({
+          selectedSprint: element,
+          selectedSprintName: element.sprintName,
+        });
       }
     });
     this.state.allTickets.forEach((element) => {
@@ -225,6 +246,7 @@ class TaskList extends React.Component {
     sprintApis
       .updateSprint(this.state.selectedSprint.id, payload)
       .then((result) => result.json());
+    this.setState({ selectedSprint: payload });
   }
 
   render() {
@@ -243,40 +265,47 @@ class TaskList extends React.Component {
           Create Ticket
         </Button>
       );
-    }
-    if (this.state.selectedSprint) {
-      if (
-        JSON.stringify(this.state.selectedSprint.status) ===
-        JSON.stringify(["Active"])
-      ) {
-        activeStatus = (
-          <span>
-            Start date :{" "}
-            {moment(this.state.selectedSprint.startDate).format("MMM Do YYYY")}{" "}
-            - End date :{" "}
-            {moment(this.state.selectedSprint.endDate).format("MMM Do YYYY")}
-          </span>
-        );
-      } else {
-        activeStatus = (
-          <Button variant="primary" onClick={this.handleSprint.bind(this)}>
-            Start Sprint
-          </Button>
-        );
+      if (this.state.selectedSprint) {
+        if (
+          JSON.stringify(this.state.selectedSprint.status) ===
+          JSON.stringify(["Active"])
+        ) {
+          activeStatus = (
+            <span>
+              Start date :{" "}
+              {moment(this.state.selectedSprint.startDate).format(
+                "MMM Do YYYY"
+              )}{" "}
+              - End date :{" "}
+              {moment(this.state.selectedSprint.endDate).format("MMM Do YYYY")}
+            </span>
+          );
+        } else {
+          activeStatus = (
+            <Button variant="primary" onClick={this.handleSprint.bind(this)}>
+              Start Sprint
+            </Button>
+          );
+        }
       }
     }
     return (
       <div className="tasklist">
         <div className="edit-ticket-btn">
-          <select
-            name="sprints"
-            id="sprints"
-            value={this.state.selectedSprint.sprintName}
-            onChange={this.setSelectedSprint.bind(this)}
-            ref={(c) => (this.selectedSprintName = c)}
-          >
-            {options}
-          </select>
+          <div className="sprint-div">
+            <select
+              name="sprints"
+              id="sprints"
+              value={this.state.selectedSprintName}
+              onChange={this.setSelectedSprint.bind(this)}
+              ref={(c) => (this.selectedSprintName = c)}
+            >
+              {options}
+            </select>
+            <Button variant="primary" onClick={this.openSprintModal}>
+              Create Sprint
+            </Button>
+          </div>
           {activeStatus}
         </div>
 
@@ -306,6 +335,10 @@ class TaskList extends React.Component {
           issueType={[this.state.issueType]}
           taskId={this.state.taskId}
         ></CreateTicket>
+        <CreateSprint
+          sprintParentCallback={this.handleSprintCallback.bind(this)}
+          isSprintOpen={this.state.isSprintOpen}
+        ></CreateSprint>
       </div>
     );
   }

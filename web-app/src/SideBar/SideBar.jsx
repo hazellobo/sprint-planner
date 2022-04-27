@@ -1,3 +1,5 @@
+// Adding the logic for SideBar
+
 import React, { useState } from "react";
 // import * as FaIcons from "react-icons/fa";
 // import * as AiIcons from "react-icons/ai";
@@ -10,7 +12,6 @@ function SideBar() {
   const [sidebar, setSidebar] = useState(true);
 
   const showSidebar = () => setSidebar(!sidebar);
-
   return (
     <>
       <IconContext.Provider value={{ color: "#35333b" }}>
@@ -38,10 +39,14 @@ function SideBar() {
               );
             })}
           </ul>
+          
         </nav>
+        
       </IconContext.Provider>
     </>
   );
 }
+
+
 
 export default SideBar;

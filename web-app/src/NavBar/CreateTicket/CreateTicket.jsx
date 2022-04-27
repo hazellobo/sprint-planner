@@ -30,6 +30,7 @@ class Project extends React.Component {
       sprints: [],
       allAvailableSprint: [],
       loggedinUser: "",
+      assigneeEmailID: ""
       // TicketSprint: "",
     };
     this.handleTextInputChange = this.handleTextInputChange.bind(this);
@@ -65,6 +66,7 @@ class Project extends React.Component {
       priority: [this.priority.value],
       sprint: [this.sprint.value],
       status: ["Open"],
+      assigneeEmailID: [this.state.assigneeEmailID]
     };
     // when a new ticket is added to a sprint - also update in the sprint api
     if (
@@ -96,6 +98,7 @@ class Project extends React.Component {
       priority: [this.priority.value],
       status: [this.status.value],
       sprint: [this.sprint.value],
+      assigneeEmailID: [this.state.assigneeEmailID]
     };
 
     if (
@@ -168,6 +171,11 @@ class Project extends React.Component {
 
   /// handler for issue assignee
   handleAssignee(event) {
+      this.state.users.forEach((user) => {
+        if (user.name === event.target.value) {
+          this.setState({ assigneeEmailID: user.emailId });
+        }
+      });
     this.setState({
       assignee: event.target.value,
     });

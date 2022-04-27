@@ -6,6 +6,7 @@ import Button from "react-bootstrap/Button";
 import ticketApis from "../../services/tickets-service.js";
 import "./CreateTicket.scss";
 import sprintApis from "../../services/sprint-service.js";
+import userApis from "../../services/user-service.js";
 
 require("react-bootstrap/ModalHeader");
 
@@ -26,6 +27,7 @@ class Project extends React.Component {
       users: [],
       sprints: [],
       allAvailableSprint: [],
+      loggedinUser: "",
       // TicketSprint: "",
     };
     this.handleTextInputChange = this.handleTextInputChange.bind(this);
@@ -92,6 +94,21 @@ class Project extends React.Component {
       .getAllSprints()
       .then((result) => result.json())
       .then((allAvailableSprint) => this.setState({ allAvailableSprint }));
+
+    userApis
+      .getAllUsers()
+      .then((result) => result.json())
+      .then((users) =>
+        this.setState({ users }, () => {
+          this.state.users.forEach((user) => {
+            if (user.emailId === localStorage.getItem("emailId")) {
+              let reporter = user.name;
+              this.setState({ loggedinUser: reporter });
+              return <option value={reporter}> {reporter} </option>;
+            }
+          });
+        })
+      );
   }
 
   // handler for issue type
@@ -150,10 +167,12 @@ class Project extends React.Component {
 
   render() {
     const sprintLength = this.state.allAvailableSprint.length;
+    const userLength = this.state.users.length;
     let sprintAvailableOptions;
+    let userAvailableOptions;
     let title;
     let button;
-    // dropdown value population based on the avail of the sprint 
+    // dropdown value population based on the avail of the sprint
     if (sprintLength === 0) {
       sprintAvailableOptions = <option>No sprints to select</option>;
     } else {
@@ -161,6 +180,7 @@ class Project extends React.Component {
         return <option value={sprint.sprintName}> {sprint.sprintName} </option>;
       });
     }
+
     // opening the popup in the edit mode
     if (this.state.isEditMode) {
       title = "Edit Ticket";
@@ -230,7 +250,7 @@ class Project extends React.Component {
                 ref={(c) => (this.reporter = c)}
                 value={this.state.reporter}
               >
-                <option value="Aravind">Aravind</option>
+                <option>{this.state.loggedinUser}</option>
                 {/* {this.state.users.map((User) => {
       return <option value={User}> {User} </option>;
     })} */}
@@ -243,10 +263,9 @@ class Project extends React.Component {
                 ref={(c) => (this.assignee = c)}
                 value={this.state.assignee}
               >
-                <option value="Aravind">Aravind</option>
-                {/* {this.state.users.map((User) => {
-      return <option value={User}> {User} </option>;
-    })} */}
+                {this.state.users.map((User) => {
+                  return <option value={User.name}> {User.name} </option>;
+                })}
               </select>
             </div>
 

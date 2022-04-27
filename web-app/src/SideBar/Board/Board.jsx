@@ -11,6 +11,7 @@ import * as BiIcons from "react-icons/bi";
 import * as BsIcons from "react-icons/bs";
 import * as VscIcons from "react-icons/vsc";
 import * as MdIcons from "react-icons/md";
+// Code the Board Component
 // import { connect } from "react-redux";
 import ReactCardFlip from "react-card-flip";
 import DoneReport from "./IndividualReports/DoneReport/DoneReport";

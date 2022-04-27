@@ -1,4 +1,5 @@
-import React from "react";
+// Code for the main Dashboard Page after logging in
+import React from 'react'
 import SideBar from "../SideBar/SideBar";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import TaskList from "../SideBar/TaskList/TaskList";
@@ -21,6 +22,7 @@ class Dashboard extends React.Component {
     })
   }
  
+
   render() {
     console.log("Inside Dash", this.state.userCred);
     return (

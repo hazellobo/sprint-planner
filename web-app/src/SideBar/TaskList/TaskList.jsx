@@ -36,6 +36,7 @@ class TaskList extends React.Component {
       selectedSprint: [],
       sprints: [],
       allTickets: [],
+      selectedSprintName: "",
       columnDefs: [
         { field: "name" },
         { field: "description" },
@@ -95,23 +96,30 @@ class TaskList extends React.Component {
       .getAllSprints()
       .then((result) => result.json())
       .then((sprints) =>
-        this.setState({ sprints, selectedSprint: sprints[0] }, () => {
-          ticketApis
-            .getAllTickets()
-            .then((result) => result.json())
-            .then((res) => {
-              this.setState({ allTickets: res });
-              let filteredSprintTickets = [];
-              res.forEach((element) => {
-                if (
-                  element.sprint[0] === this.state.selectedSprint.sprintName
-                ) {
-                  filteredSprintTickets.push(element);
-                }
+        this.setState(
+          {
+            sprints,
+            selectedSprint: sprints[0],
+            selectedSprintName: sprints[0].sprintName,
+          },
+          () => {
+            ticketApis
+              .getAllTickets()
+              .then((result) => result.json())
+              .then((res) => {
+                this.setState({ allTickets: res });
+                let filteredSprintTickets = [];
+                res.forEach((element) => {
+                  if (
+                    element.sprint[0] === this.state.selectedSprint.sprintName
+                  ) {
+                    filteredSprintTickets.push(element);
+                  }
+                });
+                this.setState({ rowData: filteredSprintTickets });
               });
-              this.setState({ rowData: filteredSprintTickets });
-            });
-        })
+          }
+        )
       );
   }
 
@@ -200,7 +208,10 @@ class TaskList extends React.Component {
     let filteredSprintTickets = [];
     this.state.sprints.forEach((element) => {
       if (element.sprintName === event.target.value) {
-        this.setState({ selectedSprint: element });
+        this.setState({
+          selectedSprint: element,
+          selectedSprintName: element.sprintName,
+        });
       }
     });
     this.state.allTickets.forEach((element) => {
@@ -225,6 +236,7 @@ class TaskList extends React.Component {
     sprintApis
       .updateSprint(this.state.selectedSprint.id, payload)
       .then((result) => result.json());
+    this.setState({ selectedSprint: payload });
   }
 
   render() {
@@ -243,26 +255,28 @@ class TaskList extends React.Component {
           Create Ticket
         </Button>
       );
-    }
-    if (this.state.selectedSprint) {
-      if (
-        JSON.stringify(this.state.selectedSprint.status) ===
-        JSON.stringify(["Active"])
-      ) {
-        activeStatus = (
-          <span>
-            Start date :{" "}
-            {moment(this.state.selectedSprint.startDate).format("MMM Do YYYY")}{" "}
-            - End date :{" "}
-            {moment(this.state.selectedSprint.endDate).format("MMM Do YYYY")}
-          </span>
-        );
-      } else {
-        activeStatus = (
-          <Button variant="primary" onClick={this.handleSprint.bind(this)}>
-            Start Sprint
-          </Button>
-        );
+      if (this.state.selectedSprint) {
+        if (
+          JSON.stringify(this.state.selectedSprint.status) ===
+          JSON.stringify(["Active"])
+        ) {
+          activeStatus = (
+            <span>
+              Start date :{" "}
+              {moment(this.state.selectedSprint.startDate).format(
+                "MMM Do YYYY"
+              )}{" "}
+              - End date :{" "}
+              {moment(this.state.selectedSprint.endDate).format("MMM Do YYYY")}
+            </span>
+          );
+        } else {
+          activeStatus = (
+            <Button variant="primary" onClick={this.handleSprint.bind(this)}>
+              Start Sprint
+            </Button>
+          );
+        }
       }
     }
     return (
@@ -271,7 +285,7 @@ class TaskList extends React.Component {
           <select
             name="sprints"
             id="sprints"
-            value={this.state.selectedSprint.sprintName}
+            value={this.state.selectedSprintName}
             onChange={this.setSelectedSprint.bind(this)}
             ref={(c) => (this.selectedSprintName = c)}
           >

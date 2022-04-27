@@ -1,3 +1,4 @@
+// Code for the LoginForm
 import React, { useEffect, useState } from "react";
 import './Login.scss';
 import Button from "react-bootstrap/Button";

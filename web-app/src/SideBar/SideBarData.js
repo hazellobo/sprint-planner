@@ -11,8 +11,6 @@ export const SidebarData = [
     icon: <AiIcons.AiOutlineUnorderedList />,
     cName: "nav-text",
   },  
-  
-  ,
   {
     title: "Board",
     path: "/board",

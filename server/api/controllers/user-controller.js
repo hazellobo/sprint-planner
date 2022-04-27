@@ -72,7 +72,7 @@ export const loginUser = async (req, res) => {
     // Check if user with given emailId exists
     const user = await userService.userExists(emailId);
     if (!emailId || !password) {
-      errorHandler("Email and Password are required", res);
+      errorHandler("All fields are mandatory", res);
     } else if (user && (await bcrypt.compare(password, user.password))) {
       setResponse({ user, token: generateToken(user.id) }, res);
       console.log("Login Successful");

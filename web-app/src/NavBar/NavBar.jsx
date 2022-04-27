@@ -8,7 +8,7 @@ import Container from "react-bootstrap/Container";
 import Sprint from "./CreateSprint/CreateSprint";
 import LoginForm from "../components/LoginForm";
 import { BsPersonCircle } from "react-icons/bs";
-
+import logo from "../assets/logo.png";
 class NavBarC extends React.Component {
   constructor(props) {
     super(props);
@@ -26,7 +26,6 @@ class NavBarC extends React.Component {
   // }
   openModal = () => this.setState({ isOpen: true });
   closeModal = () => this.setState({ isOpen: false });
-
 
   // logout handler
   logout = (e) => {
@@ -47,8 +46,8 @@ class NavBarC extends React.Component {
           <Container fluid>
             <Navbar.Brand>
               <img
-                alt=""
-                src="/logo.svg"
+                alt="logo"
+                src={logo}
                 width="30"
                 height="30"
                 className="d-inline-block align-top"

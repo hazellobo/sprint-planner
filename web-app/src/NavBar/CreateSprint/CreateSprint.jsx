@@ -31,6 +31,7 @@ class Sprint extends React.Component {
   // openModal = () => this.setState({ isOpen: true });
   closeModal = () => this.setState({ isSprintOpen: false, error: "" });
 
+  //create sprint
   createSprint() {
     // const { sprintName, sprintDuration } = this.state;
     const status = ["Inactive"];
@@ -71,15 +72,19 @@ class Sprint extends React.Component {
   //   });
   // }
 
+  //onchange of Issue
   handleIssueType = (e) => {
     this.setState({ sprintDuration: e.target.value });
   };
 
+  //onchange of Goal field
   handleTextAreaInputChange(event) {
     this.setState({
       sprintGoal: event.target.value,
     });
   }
+
+  //onchange of sprintName
   handleTextInputChange(event) {
     sprintApis.getAllSprints().then((res) => {
       res.json().then((a) =>

@@ -40,6 +40,7 @@ class Dashboard extends React.Component {
       <div className="main">
         <NavBarC username={this.state.user.name}></NavBarC>
         <div className="sidebar-routes">
+          {/* routes */}
           <Router>
             <SideBar />
             <Switch>

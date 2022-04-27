@@ -1,5 +1,6 @@
 const API_URL = "http://localhost:9000/users/";
 
+//fetch all users
 function getAllUsers() {
   return fetch(API_URL, {
     method: "GET",
@@ -9,6 +10,7 @@ function getAllUsers() {
   });
 }
 
+//login User
 function loggedInUser(user) {
   return fetch(`${API_URL}login`, {
     method: "POST",
@@ -19,6 +21,7 @@ function loggedInUser(user) {
   });
 }
 
+//fetch logged in User
 function getLoggedInUser(token) {
   return fetch(`${API_URL}getMe`, {
     method: "GET",
@@ -28,6 +31,7 @@ function getLoggedInUser(token) {
   });
 }
 
+//fetch user by id
 function getUserByEmailId(emailId) {
   return fetch(`${API_URL}/${emailId}`, {
     method: "GET",
@@ -37,6 +41,7 @@ function getUserByEmailId(emailId) {
   });
 }
 
+//defining functions to export
 const userApis = {
   loggedInUser,
   getAllUsers,

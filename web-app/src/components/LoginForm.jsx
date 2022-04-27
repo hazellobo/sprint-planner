@@ -37,6 +37,7 @@ function LoginForm() {
         if (!result.hasOwnProperty("error")) {
           setToken(result.token);
           setUser(result.user);
+          //storing details in localStorage to access post login
           localStorage.setItem("userToken", result.token);
           localStorage.setItem("emailId", result.user.emailId);
         } else {
@@ -57,6 +58,7 @@ function LoginForm() {
       <form className="loginForm" onSubmit={submitHandler}>
         <div className="form-inner">
           <h2>Login</h2>
+          {/* checks for error */}
           {error !== "" ? <div className="error">{error}</div> : ""}
           <div className="form-group">
             <label htmlFor="email">Email: </label>

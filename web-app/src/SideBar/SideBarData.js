@@ -4,6 +4,7 @@ import * as FaIcons from "react-icons/fa";
 import * as HiIcons from "react-icons/hi";
 import * as VscIcons from "react-icons/vsc";
 
+//menu items of sideBar
 export const SidebarData = [
   {
     title: "List",

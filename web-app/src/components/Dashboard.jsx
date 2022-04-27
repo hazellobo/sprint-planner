@@ -6,26 +6,37 @@ import Reports from "../SideBar/Reports/Reports";
 import Board from "../SideBar/Board/Board";
 import Project from "../SideBar/ProjectDetails/ProjectDetails";
 import NavBarC from "../NavBar/NavBar";
+import userApis from "../services/user-service";
 
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userCred: this.props.user,
+      user: {},
+      users: [],
     };
   }
 
   componentDidMount() {
-    this.setState({
-      userCred:this.props.user
-    })
+    userApis
+      .getAllUsers()
+      .then((result) => result.json())
+      .then((users) =>
+        this.setState({ users }, () => {
+          this.state.users.forEach((user) => {
+            if (user.emailId === localStorage.getItem("emailId")) {
+              let loggedUser = user;
+              this.setState({ user: loggedUser });
+            }
+          });
+        })
+      );
   }
- 
+
   render() {
-    console.log("Inside Dash", this.state.userCred);
     return (
       <div className="main">
-        <NavBarC userCred={this.state.userCred}></NavBarC>
+        <NavBarC username={this.state.user.name}></NavBarC>
         <div className="sidebar-routes">
           <Router>
             <SideBar />

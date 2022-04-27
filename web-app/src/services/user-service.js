@@ -28,6 +28,20 @@ function getLoggedInUser(token) {
   });
 }
 
-const userApis = { loggedInUser, getAllUsers, getLoggedInUser };
+function getUserByEmailId(emailId) {
+  return fetch(`${API_URL}/${emailId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+}
+
+const userApis = {
+  loggedInUser,
+  getAllUsers,
+  getLoggedInUser,
+  getUserByEmailId,
+};
 
 export default userApis;

@@ -12,20 +12,20 @@ import * as BsIcons from "react-icons/bs";
 import * as VscIcons from "react-icons/vsc";
 import * as MdIcons from "react-icons/md";
 // Code the Board Component
-import { connect } from "react-redux";
+// import { connect } from "react-redux";
 import ReactCardFlip from "react-card-flip";
-import DoneReport from "../IndividualReports/DoneReport/DoneReport";
-import InProgressReport from "../IndividualReports/InProgressReport/InProgressReport";
-import OpenReport from "../IndividualReports/OpenReport/OpenReport";
+import DoneReport from "./IndividualReports/DoneReport/DoneReport";
+import InProgressReport from "./IndividualReports/InProgressReport/InProgressReport";
+import OpenReport from "./IndividualReports/OpenReport/OpenReport";
 
-function mapStateToProps(state) {
-  const sprint = state.sprint;
-  // const text = state.text;
-  return {
-    sprint,
-    // text
-  };
-}
+// function mapStateToProps(state) {
+//   const sprint = state.sprint;
+//   // const text = state.text;
+//   return {
+//     sprint,
+//     // text
+//   };
+// }
 
 // const mapDispatchToProps = (dispatch) => {
 //   return {

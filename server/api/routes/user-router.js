@@ -9,7 +9,7 @@ import { protect } from "../controllers/authCheck.js";
 
 const router = express.Router();
 
-//user registration
+//routes for user login,registration, search 
 router
   .post("/users/register", registerUser)
   .post("/users/login", loginUser)

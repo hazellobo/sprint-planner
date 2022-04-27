@@ -23,9 +23,8 @@ function getLoggedInUser(token) {
   return fetch(`${API_URL}getMe`, {
     method: "GET",
     headers: {
-      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify("Bearer " + token),
   });
 }
 

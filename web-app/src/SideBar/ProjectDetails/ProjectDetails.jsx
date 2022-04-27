@@ -4,7 +4,7 @@ import React from "react";
 // import "~bootstrap/scss/bootstrap";
 import "bootstrap/dist/js/bootstrap.min.js";
 import projectApis from "../../services/project-service.js";
-
+import userApis from "../../services/user-service.js";
 require("react-bootstrap/ModalHeader");
 
 class Project extends React.Component {
@@ -19,11 +19,35 @@ class Project extends React.Component {
       scrumDuration: "",
       scrumIds: "",
       error: "",
+      users: [],
+      isScrumMaster: true,
     };
   }
 
   openModal = () => this.setState({ isOpen: true });
   closeModal = () => this.setState({ isOpen: false });
+
+  componentDidMount() {
+    userApis.getAllUsers().then((res) => {
+      res.json().then((a) =>
+        a.forEach((user) => {
+          if (user.emailId === localStorage.getItem("emailId")) {
+            if(user.role[0]==="Scrum Master"){
+              this.setState({
+                isScrumMaster: false,
+              });
+            }
+            else{
+              this.setState({
+                isScrumMaster: true,
+                error: "Only Scrum Master can edit Project"
+              });
+            }
+          } 
+        })
+      );
+    });
+  }
 
   addTask = async () => {
     const { name, description, url, scrumTeam, scrumIds } = this.state;
@@ -45,6 +69,8 @@ class Project extends React.Component {
       });
     }
   };
+
+
 
   handleChange(event) {
     const target = event.target;
@@ -130,6 +156,7 @@ class Project extends React.Component {
             type="submit"
             className="btn btn-primary"
             onClick={this.addTask}
+            disabled={this.state.isScrumMaster}
           >
             Create Project
           </button>

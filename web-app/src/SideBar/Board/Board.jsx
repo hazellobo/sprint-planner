@@ -105,12 +105,28 @@ class BoardComponent extends React.Component {
     sprintApis
       .getAllSprints()
       .then((result) => result.json())
-      .then((sprints) => this.setState({ sprints }));
-    ticketApis
-      .getAllTickets()
-      .then((result) => result.json())
-      .then((tickets) => this.setState({ tickets: tickets }));
-      // userApis
+      .then((sprints) =>
+        this.setState({ sprints, selectedSprint: sprints[0] }, () => {
+          ticketApis
+            .getAllTickets()
+            .then((result) => result.json())
+            .then((res) => {
+              this.setState({ tickets: res });
+              let filteredSprintTickets = [];
+              res.forEach((element) => {
+                if (
+                  element.sprint[0] === this.state.selectedSprint.sprintName
+                ) {
+                  filteredSprintTickets.push(element);
+                }
+              });
+              this.setState({
+                filteredSprintTickets: filteredSprintTickets,
+                filteredTickets: filteredSprintTickets,
+              });
+            });
+        })
+      );
   }
 
   // handl the sprint selection from the dropdown

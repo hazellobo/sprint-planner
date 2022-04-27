@@ -94,20 +94,25 @@ class TaskList extends React.Component {
     sprintApis
       .getAllSprints()
       .then((result) => result.json())
-      .then((sprints) => this.setState({ sprints }));
-    ticketApis
-      .getAllTickets()
-      .then((result) => result.json())
-      .then((res) => {
-        this.setState({ allTickets: res });
-        let filteredSprintTickets = [];
-        res.forEach((element) => {
-          if (element.sprint[0] === this.state.selectedSprint.sprintName) {
-            filteredSprintTickets.push(element);
-          }
-        });
-        this.setState({ rowData: filteredSprintTickets });
-      });
+      .then((sprints) =>
+        this.setState({ sprints, selectedSprint: sprints[0] }, () => {
+          ticketApis
+            .getAllTickets()
+            .then((result) => result.json())
+            .then((res) => {
+              this.setState({ allTickets: res });
+              let filteredSprintTickets = [];
+              res.forEach((element) => {
+                if (
+                  element.sprint[0] === this.state.selectedSprint.sprintName
+                ) {
+                  filteredSprintTickets.push(element);
+                }
+              });
+              this.setState({ rowData: filteredSprintTickets });
+            });
+        })
+      );
   }
 
   onGridReady = (params) => {
@@ -175,7 +180,18 @@ class TaskList extends React.Component {
       let uniqueRowData = this.getUniqueListBy(updatedRowData);
       this.setState({ rowData: uniqueRowData });
     } else {
-      this.setState({ rowData: [...this.state.rowData, childData] });
+      this.setState(
+        { allTickets: [...this.state.allTickets, childData] },
+        () => {
+          let filteredSprintTickets = [];
+          this.state.allTickets.forEach((element) => {
+            if (element.sprint[0] === this.state.selectedSprint.sprintName) {
+              filteredSprintTickets.push(element);
+            }
+          });
+          this.setState({ rowData: filteredSprintTickets });
+        }
+      );
     }
     this.closeModal();
   };
